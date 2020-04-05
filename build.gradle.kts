@@ -104,8 +104,6 @@ tasks {
     }
 }
 
-
-
 fun String.withBuildVersionSuffix(): String {
     val branch = System.getenv("TRAVIS_BRANCH")
     val suffix = if (branch == null || branch.isBlank() || branch == "development") "-SNAPSHOT"
