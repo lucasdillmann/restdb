@@ -85,7 +85,7 @@ tasks {
             "DIST_FILE" to "restdb-$version.tar"
         ))
 
-        name = "lucasdillmann/restdb:$version"
+        name = "lucasdillmann1/restdb:$version"
     }
 
     check {

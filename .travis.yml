@@ -2,9 +2,6 @@ language: java
 jdk: openjdk11
 os: linux
 
-services:
-  - docker
-
 install:
   - chmod +x gradlew
 
@@ -30,5 +27,12 @@ jobs:
     - stage: quality assurance
       script: ./gradlew detekt
     - stage: release
-      script: ./gradlew docker
-      if: branch = master
+      if: branch IN (master, development)
+      services:
+        - docker
+      before_script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      script:
+        - ./gradlew docker dockerPush
+      after_script:
+        - docker logout
