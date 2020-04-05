@@ -51,6 +51,10 @@ object JdbcPredicateFactory {
         }
     }
 
+    /**
+     * Checks if received parameters match expected count, throwing an [InvalidParameterCountException] when
+     * validation fails
+     */
     private fun validateParametersSize(currentSize: Int, filter: FilterType, column: String) {
         val exactMode = filter.minimumParameters == filter.maximumParameters
         val notifyError = { discriminator: String, expectedSize: Int ->

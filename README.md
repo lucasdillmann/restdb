@@ -10,6 +10,7 @@ Development goals and status:
 |Goal|Status|
 |---|---|
 |Architecture definition|Done|
+|DSL syntax definition for query results filtering|Done|
 |Main source code|Done|
 |CI/CD with TravisCI|Done|
 |Docker image release on CI/CD|Done|
