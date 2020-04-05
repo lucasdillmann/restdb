@@ -1,14 +1,11 @@
 package br.com.dillmann.restdb.domain.data.getRow
 
 import br.com.dillmann.restdb.core.jdbc.ConnectionPool
-import br.com.dillmann.restdb.core.jdbc.isNumeric
 import br.com.dillmann.restdb.domain.data.utils.retrieveSingleRow
-import br.com.dillmann.restdb.domain.data.utils.setParameter
 import br.com.dillmann.restdb.domain.data.validateSchemaAndTableName
 import br.com.dillmann.restdb.domain.data.validateSinglePrimaryKeyColumn
 import br.com.dillmann.restdb.domain.metadata.findTableColumns
 import br.com.dillmann.restdb.domain.metadata.findTablePrimaryKeyColumns
-import java.sql.Connection
 
 /**
  * Selects a single row in provided [schema], [table] and primary key [rowId] value

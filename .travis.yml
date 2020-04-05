@@ -28,7 +28,6 @@ jobs:
       script: ./gradlew docker
       if: branch = master
 
-
 stages:
   - build
   - quality assurance
