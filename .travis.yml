@@ -5,6 +5,9 @@ os: linux
 services:
   - docker
 
+install:
+  - chmod +x gradlew
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -13,8 +16,10 @@ cache:
   directories:
     - $HOME/.gradle/
 
-before_script:
-  - chmod +x gradlew
+stages:
+  - build
+  - quality assurance
+  - release
 
 jobs:
   include:
@@ -27,8 +32,3 @@ jobs:
     - stage: release
       script: ./gradlew docker
       if: branch = master
-
-stages:
-  - build
-  - quality assurance
-  - release
