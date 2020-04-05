@@ -1,0 +1,35 @@
+language: java
+jdk: openjdk11
+os: linux
+
+services:
+  - docker
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/
+
+before_script:
+  - chmod +x gradlew
+
+jobs:
+  include:
+    - stage: build
+      script: ./gradlew clean build -x test
+    - stage: quality assurance
+      script: ./gradlew test
+    - stage: quality assurance
+      script: ./gradlew detekt
+    - stage: release
+      script: ./gradlew docker
+      if: branch = master
+
+
+stages:
+  - build
+  - quality assurance
+  - release
