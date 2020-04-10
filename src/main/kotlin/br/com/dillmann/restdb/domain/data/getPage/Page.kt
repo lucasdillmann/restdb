@@ -9,7 +9,7 @@ import br.com.dillmann.restdb.domain.data.getPage.sorting.SortColumn
  * @since 1.0.0, 2020-03-27
  */
 data class Page(
-    val schemaName: String,
+    val partitionName: String,
     val tableName: String,
     val pageNumber: Long,
     val pageSize: Long,

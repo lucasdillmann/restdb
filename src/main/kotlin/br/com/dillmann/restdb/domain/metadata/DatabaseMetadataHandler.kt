@@ -1,5 +1,7 @@
 package br.com.dillmann.restdb.domain.metadata
 
+import br.com.dillmann.restdb.core.jdbc.ConnectionPool
+import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import io.ktor.application.ApplicationCall
 import io.ktor.response.respond
 
@@ -11,6 +13,7 @@ import io.ktor.response.respond
  * @since 1.0.0, 2020-04-01
  */
 suspend fun handleGetMetadata(call: ApplicationCall) {
-    val metadata = findDatabaseMetadata()
+    val metadataResolver = MetadataResolverFactory.build()
+    val metadata = ConnectionPool.startConnection().use(metadataResolver::findDatabaseMetadata)
     call.respond(metadata)
 }

@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.metadata
+package br.com.dillmann.restdb.domain.metadata.model
 
 /**
  * Database metadata details
@@ -9,7 +9,7 @@ package br.com.dillmann.restdb.domain.metadata
 data class DatabaseMetadata(
     val database: Product,
     val driver: Product,
-    val schemas: Map<String, Schema>
+    val partitions: Map<String, Partition>
 )
 
 

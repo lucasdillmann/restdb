@@ -5,37 +5,37 @@ import br.com.dillmann.restdb.core.jdbc.runInTransaction
 import br.com.dillmann.restdb.domain.data.utils.retrieveSingleRow
 import br.com.dillmann.restdb.domain.data.utils.setParameter
 import br.com.dillmann.restdb.domain.data.validateRequestBody
-import br.com.dillmann.restdb.domain.data.validateSchemaAndTableName
+import br.com.dillmann.restdb.domain.data.validatePartitionAndTableName
 import br.com.dillmann.restdb.domain.data.validateSinglePrimaryKeyColumn
-import br.com.dillmann.restdb.domain.metadata.findTableColumns
-import br.com.dillmann.restdb.domain.metadata.findTablePrimaryKeyColumns
+import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import java.sql.Connection
 
 /**
  * Executes a UPDATE in database using PATCH strategy
  *
  * @param data Column names and values to be updated
- * @param schema Schema name
+ * @param partition Partition name
  * @param table Table name
  * @param rowId Primary key column value
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-29
  */
-fun updateRow(data: Map<String, Any>, schema: String, table: String, rowId: String): Map<String, Any?> {
-    ConnectionPool.startConnection().use { connection ->
-        validateSchemaAndTableName(connection, schema, table)
+fun updateRow(data: Map<String, Any>, partition: String, table: String, rowId: String): Map<String, Any?> {
+    return ConnectionPool.startConnection().use { connection ->
+        validatePartitionAndTableName(connection, partition, table)
 
-        val primaryKeyColumns = findTablePrimaryKeyColumns(connection, schema, table)
-        validateSinglePrimaryKeyColumn(schema, table, primaryKeyColumns)
+        val metadataResolver = MetadataResolverFactory.build()
+        val primaryKeyColumns = metadataResolver.findTablePrimaryKeyColumns(connection, partition, table)
+        validateSinglePrimaryKeyColumn(partition, table, primaryKeyColumns)
 
-        val databaseColumns = findTableColumns(connection, schema, table)
+        val databaseColumns = metadataResolver.findTableColumns(connection, partition, table)
         val receivedColumns = data.keys
 
         validateRequestBody(receivedColumns, databaseColumns, primaryKeyColumns, false)
-        persistRow(connection, schema, table, primaryKeyColumns.first(), rowId, data)
-        return@updateRow retrieveSingleRow(
+        persistRow(connection, partition, table, primaryKeyColumns.first(), rowId, data)
+        retrieveSingleRow(
             connection,
-            schema,
+            partition,
             table,
             primaryKeyColumns,
             databaseColumns.keys,
@@ -48,7 +48,7 @@ fun updateRow(data: Map<String, Any>, schema: String, table: String, rowId: Stri
  * Persist the row changes in database
  *
  * @param connection JDBC connection
- * @param schema Schema name
+ * @param partition Partition name
  * @param table Table name
  * @param primaryKeyColumn Primary key column name
  * @param rowId Primary key column value
@@ -58,14 +58,14 @@ fun updateRow(data: Map<String, Any>, schema: String, table: String, rowId: Stri
  */
 private fun persistRow(
     connection: Connection,
-    schema: String,
+    partition: String,
     table: String,
     primaryKeyColumn: String,
     rowId: String,
     data: Map<String, Any>
 ) {
     val columnNames = data.keys.joinToString(separator = ", ") { "$it = ?" }
-    val updateSqlStatement = "UPDATE $schema.$table SET $columnNames WHERE $primaryKeyColumn = ?"
+    val updateSqlStatement = "UPDATE $partition.$table SET $columnNames WHERE $primaryKeyColumn = ?"
 
     connection.runInTransaction {
         connection.prepareStatement(updateSqlStatement).use { statement ->

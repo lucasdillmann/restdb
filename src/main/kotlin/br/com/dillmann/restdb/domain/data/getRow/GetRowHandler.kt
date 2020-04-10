@@ -14,10 +14,10 @@ import io.ktor.response.respond
  * @since 1.0.0, 2020-03-29
  */
 suspend fun handleGetRow(call: ApplicationCall) {
-    val (schemaName, tableName) = call.mainRequestParameters()
+    val (partitionName, tableName) = call.mainRequestParameters()
     val rowId = call.rowId()
 
-    findRow(schemaName, tableName, rowId)
+    findRow(partitionName, tableName, rowId)
         ?.let { call.respond(HttpStatusCode.OK, it) }
         ?: call.respond(HttpStatusCode.NotFound)
 }

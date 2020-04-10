@@ -1,6 +1,6 @@
 package br.com.dillmann.restdb.core.jdbc
 
-import br.com.dillmann.restdb.domain.metadata.findProductDetails
+import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 
 /**
  * Utility object for informative connection state details
@@ -17,7 +17,8 @@ object ConnectionDetails {
      * @since 1.0.0, 2020-04-01
      */
     fun printProductDetails() {
-        val (database, driver) = ConnectionPool.startConnection().use(::findProductDetails)
+        val metadataResolver = MetadataResolverFactory.build()
+        val (database, driver) = ConnectionPool.startConnection().use(metadataResolver::findProductDetails)
         logger.info("Connection started successfully to database $database using $driver")
     }
 }

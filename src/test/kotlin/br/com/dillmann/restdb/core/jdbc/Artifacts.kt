@@ -1,7 +1,7 @@
 package br.com.dillmann.restdb.core.jdbc
 
-import br.com.dillmann.restdb.domain.metadata.Product
-import br.com.dillmann.restdb.domain.metadata.ProductsDetails
+import br.com.dillmann.restdb.domain.metadata.model.Product
+import br.com.dillmann.restdb.domain.metadata.model.ProductsDetails
 import br.com.dillmann.restdb.testUtils.randomString
 
 /**

@@ -9,8 +9,8 @@ import io.ktor.http.HttpStatusCode
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-29
  */
-class NoPrimaryKeyException(schema: String, table: String) :
+class NoPrimaryKeyException(partition: String, table: String) :
     HttpException(
-        "Your request cannot be accepted. Table $table of schema $schema does not have a primary key.",
+        "Your request cannot be accepted. Table $table of partition $partition does not have a primary key.",
         HttpStatusCode.NotImplemented
     )

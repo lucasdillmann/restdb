@@ -15,10 +15,10 @@ import io.ktor.response.respond
  * @since 1.0.0, 2020-03-29
  */
 suspend fun handlePatch(call: ApplicationCall) {
-    val (schemaName, tableName) = call.mainRequestParameters()
+    val (partitionName, tableName) = call.mainRequestParameters()
     val rowId = call.rowId()
     val body = call.jsonBody()
 
-    val updatedRow = updateRow(body, schemaName, tableName, rowId)
+    val updatedRow = updateRow(body, partitionName, tableName, rowId)
     call.respond(HttpStatusCode.OK, updatedRow)
 }

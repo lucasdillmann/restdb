@@ -14,9 +14,9 @@ import io.ktor.response.respond
  * @since 1.0.0, 2020-03-29
  */
 suspend fun handleDelete(call: ApplicationCall) {
-    val (schemaName, tableName) = call.mainRequestParameters()
+    val (partitionName, tableName) = call.mainRequestParameters()
     val rowId = call.rowId()
 
-    deleteRow(schemaName, tableName, rowId)
+    deleteRow(partitionName, tableName, rowId)
     call.respond(HttpStatusCode.NoContent)
 }

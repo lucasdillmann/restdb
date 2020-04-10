@@ -14,9 +14,9 @@ import io.ktor.response.respond
  * @since 1.0.0, 2020-03-29
  */
 suspend fun handlePost(call: ApplicationCall) {
-    val (schemaName, tableName) = call.mainRequestParameters()
+    val (partition, tableName) = call.mainRequestParameters()
     val body = call.jsonBody()
 
-    val createdRow = createRow(body, schemaName, tableName)
+    val createdRow = createRow(body, partition, tableName)
     call.respond(HttpStatusCode.Created, createdRow)
 }

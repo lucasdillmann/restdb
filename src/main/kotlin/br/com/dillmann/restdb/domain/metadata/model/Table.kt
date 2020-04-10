@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.metadata
+package br.com.dillmann.restdb.domain.metadata.model
 
 /**
  * Table metadata details

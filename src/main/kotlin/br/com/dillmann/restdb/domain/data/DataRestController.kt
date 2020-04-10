@@ -16,7 +16,7 @@ import io.ktor.routing.*
  * @since 1.0.0, 2020-03-28
  */
 fun Routing.dataEndpoints() {
-    route("/data/{schema}/{table}") {
+    route("/data/{partition}/{table}") {
         post {
             handlePost(call)
         }

@@ -24,5 +24,5 @@ Development goals and status:
 |Support for PostgreSQL|Done| 
 |Support for Microsoft SQL Server|Pending| 
 |Support for Oracle Database|Pending| 
-|Support for MySQL/MariaDB|Pending| 
+|Support for MySQL/MariaDB|Done| 
 

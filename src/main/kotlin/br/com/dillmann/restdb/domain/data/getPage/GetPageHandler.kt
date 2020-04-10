@@ -20,13 +20,13 @@ private const val DEFAULT_PAGE_SIZE = 25L
  * @since 1.0.0, 2020-03-29
  */
 suspend fun handleGetPage(call: ApplicationCall) {
-    val (schemaName, tableName) = call.mainRequestParameters()
+    val (partitionName, tableName) = call.mainRequestParameters()
     val pageNumber = call.getQueryParameter("pageNumber", DEFAULT_PAGE_NUMBER) { it.toLong() }
     val pageSize = call.getQueryParameter("pageSize", DEFAULT_PAGE_SIZE) { it.toLong() }
     val sorting = call.getQueryParameter("sort", "").asSortingInstructions()
     val projection = call.getQueryParameter("columns", "").asProjectionInstructions()
     val filter = call.getQueryParameter("filter", "").asFilterPredicate()
 
-    val page = findPage(schemaName, tableName, pageNumber, pageSize, sorting, projection, filter)
+    val page = findPage(partitionName, tableName, pageNumber, pageSize, sorting, projection, filter)
     call.respond(HttpStatusCode.OK, page)
 }

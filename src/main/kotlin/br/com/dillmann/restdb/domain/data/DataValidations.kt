@@ -3,32 +3,34 @@ package br.com.dillmann.restdb.domain.data
 import br.com.dillmann.restdb.core.statusPages.exceptions.ValidationException
 import br.com.dillmann.restdb.core.statusPages.utils.ErrorDetails
 import br.com.dillmann.restdb.domain.data.exception.CompositePrimaryKeyException
-import br.com.dillmann.restdb.domain.data.exception.InvalidSchemaNameException
+import br.com.dillmann.restdb.domain.data.exception.InvalidPartitionNameException
 import br.com.dillmann.restdb.domain.data.exception.InvalidTableNameException
 import br.com.dillmann.restdb.domain.data.exception.NoPrimaryKeyException
-import br.com.dillmann.restdb.domain.metadata.Column
+import br.com.dillmann.restdb.domain.metadata.model.Column
+import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import java.sql.Connection
 
 /**
- * Validates if provided schema and table names exists in database
+ * Validates if provided partition and table names exists in database
  *
  * @param connection JDBC connection
- * @param schemaName Schema name
+ * @param partitionName Partition name
  * @param tableName Table name
- * @throws InvalidSchemaNameException when schema do not exists
+ * @throws InvalidPartitionNameException when partition do not exists
  * @throws InvalidTableNameException when table do not exists
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-28
  */
-fun validateSchemaAndTableName(connection: Connection, schemaName: String, tableName: String) {
-    val schemaExists = connection.metaData.getSchemas(null, schemaName).next()
-    if (!schemaExists)
-        throw InvalidSchemaNameException(schemaName)
+fun validatePartitionAndTableName(connection: Connection, partitionName: String, tableName: String) {
+    val metadataResolver = MetadataResolverFactory.build()
+    val partitionExists = metadataResolver.partitionExists(connection, partitionName)
+    if (!partitionExists)
+        throw InvalidPartitionNameException(partitionName)
 
-    val tableExists = connection.metaData.getTables(null, schemaName, tableName, arrayOf("TABLE")).next()
+    val tableExists = metadataResolver.tableExists(connection, partitionName, tableName)
     if (!tableExists)
         throw InvalidTableNameException(
-            schemaName,
+            partitionName,
             tableName
         )
 }
@@ -82,7 +84,7 @@ private fun Set<String>.throwValidationException(message: String): Nothing {
 /**
  * Checks if table has exactly one primary key column
  *
- * @param schema Schema name
+ * @param partitionName Partition name
  * @param table Table name
  * @param primaryKeyColumns Table primary key columns
  * @throws NoPrimaryKeyException when table do not have primary key columns
@@ -90,13 +92,13 @@ private fun Set<String>.throwValidationException(message: String): Nothing {
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-28
  */
-fun validateSinglePrimaryKeyColumn(schema: String, table: String, primaryKeyColumns: Set<String>) {
+fun validateSinglePrimaryKeyColumn(partitionName: String, table: String, primaryKeyColumns: Set<String>) {
     if (primaryKeyColumns.isEmpty())
-        throw NoPrimaryKeyException(schema, table)
+        throw NoPrimaryKeyException(partitionName, table)
 
     if (primaryKeyColumns.size > 1)
         throw CompositePrimaryKeyException(
-            schema,
+            partitionName,
             table,
             primaryKeyColumns
         )

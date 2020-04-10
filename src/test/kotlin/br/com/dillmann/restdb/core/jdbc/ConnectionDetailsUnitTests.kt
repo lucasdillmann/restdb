@@ -1,12 +1,12 @@
 package br.com.dillmann.restdb.core.jdbc
 
-import br.com.dillmann.restdb.domain.metadata.findProductDetails
+import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolver
+import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import io.mockk.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.sql.Connection
-import kotlin.reflect.jvm.javaMethod
 
 /**
  * @author Lucas Dillmann
@@ -15,17 +15,18 @@ import kotlin.reflect.jvm.javaMethod
 class ConnectionDetailsUnitTests {
 
     private val connection: Connection = mockk()
+    private val metadataResolver: MetadataResolver = mockk()
     private val productDetails = randomProductDetails()
 
     @Before
     fun setUp() {
-        mockkObject(ConnectionPool, logger)
-        mockkStatic(::findProductDetails.javaMethod!!.declaringClass.name)
+        mockkObject(ConnectionPool, MetadataResolverFactory, logger)
 
         every { connection.close() } just Runs
         every { logger.info(any()) } just Runs
         every { ConnectionPool.startConnection() } returns connection
-        every { findProductDetails(any()) } returns productDetails
+        every { MetadataResolverFactory.build() } returns metadataResolver
+        every { metadataResolver.findProductDetails(any()) } returns productDetails
     }
 
     @After

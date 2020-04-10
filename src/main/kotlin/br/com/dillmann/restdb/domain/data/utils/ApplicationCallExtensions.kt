@@ -61,20 +61,20 @@ fun <T> ApplicationCall.getQueryParameter(parameterName: String, defaultValue: T
 }
 
 /**
- * Reads schema and table names from route variables, throwing [MissingUriParameterException] when they are not
+ * Reads partition and table names from route variables, throwing [MissingUriParameterException] when they are not
  * found
  *
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-28
  */
 fun ApplicationCall.mainRequestParameters(): Pair<String, String> {
-    val schemaName = parameters["schema"] ?: throw MissingUriParameterException(
-        "schema"
+    val partitionName = parameters["partition"] ?: throw MissingUriParameterException(
+        "partition"
     )
     val tableName = parameters["table"] ?: throw MissingUriParameterException(
         "table"
     )
-    return schemaName to tableName
+    return partitionName to tableName
 }
 
 /**

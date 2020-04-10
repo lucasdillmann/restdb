@@ -1,14 +1,14 @@
-package br.com.dillmann.restdb.domain.metadata
+package br.com.dillmann.restdb.domain.metadata.model
 
 /**
- * Schema metadata details
+ * Partition metadata details
  *
- * @param name Schema name
+ * @param name Partition name
  * @param tables Children table details
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-27
  */
-data class Schema(
+data class Partition(
     val name: String,
     val tables: Map<String, Table>
 )

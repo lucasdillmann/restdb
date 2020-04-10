@@ -7,9 +7,9 @@ import br.com.dillmann.restdb.domain.data.getPage.sorting.asSqlInstructions
 /**
  * SQL builder for paginated queries
  *
- * @param schema Database schema name
+ * @param partition Database partition name
  * @param table Table name
- * @param columns All columns available in the [table] of the [schema]
+ * @param columns All columns available in the [table] of the [partition]
  * @param pageSize Amount of rows to return in requested page
  * @param pageNumber Page ordinal number
  * @param projection Columns to be selected by the generated query
@@ -19,7 +19,7 @@ import br.com.dillmann.restdb.domain.data.getPage.sorting.asSqlInstructions
  * @since 1.0.0, 2020-03-30
  */
 class SqlBuilder(
-    private val schema: String,
+    private val partition: String,
     private val table: String,
     private val columns: Set<String>,
     private val pageSize: Long,
@@ -63,18 +63,18 @@ class SqlBuilder(
         val sortingSql = sorting?.asSqlInstructions() ?: ""
         val columnsSql = projection?.joinToString() ?: columns.joinToString()
         val filterSql = filter?.sqlInstructions?.let { "WHERE $it" } ?: ""
+        val offsetSql = OffsetSyntaxBuilder.build(offset, pageSize)
 
         val pageSql = """
             SELECT $columnsSql 
-            FROM $schema.$table 
+            FROM $partition.$table 
             $filterSql 
             $sortingSql 
-            OFFSET $offset 
-            FETCH NEXT $pageSize ROWS ONLY
+            $offsetSql
         """.trimIndent().escapeSql()
         val countSql = """
             SELECT COUNT(*) AS count 
-            FROM $schema.$table 
+            FROM $partition.$table 
             $filterSql
         """.trimIndent().escapeSql()
 

@@ -8,5 +8,5 @@ import br.com.dillmann.restdb.core.statusPages.exceptions.BadRequestException
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-29
  */
-class InvalidTableNameException(schemaName: String, tableName: String) :
-    BadRequestException("Table $tableName do not exists in schema $schemaName")
+class InvalidTableNameException(partitionName: String, tableName: String) :
+    BadRequestException("Table $tableName do not exists in partition $partitionName")

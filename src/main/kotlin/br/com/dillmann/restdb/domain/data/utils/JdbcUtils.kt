@@ -1,7 +1,7 @@
 package br.com.dillmann.restdb.domain.data.utils
 
 import br.com.dillmann.restdb.core.jdbc.isNumeric
-import br.com.dillmann.restdb.domain.metadata.findTableColumns
+import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import java.sql.Array
 import java.sql.Connection
 
@@ -9,7 +9,7 @@ import java.sql.Connection
  * Selects a single row in database
  *
  * @param connection JDBC connection
- * @param schema Schema name
+ * @param partition Partition name
  * @param table Table name
  * @param tableColumns All table columns
  * @param primaryKeyColumns Table primary key column names
@@ -19,26 +19,26 @@ import java.sql.Connection
  */
 fun retrieveSingleRow(
     connection: Connection,
-    schema: String,
+    partition: String,
     table: String,
     primaryKeyColumns: Set<String>,
     tableColumns: Set<String>,
     data: Map<String, Any?>
 ): Map<String, Any?>? {
 
-    val columns = findTableColumns(connection, schema, table)
+    val columns = MetadataResolverFactory.build().findTableColumns(connection, partition, table)
     val primaryKeyValues = primaryKeyColumns.map {
         val value = data[it]
-        val column = columns[it] ?: error("Missing column metadata for $schema.$table.$it")
+        val column = columns[it] ?: error("Missing column metadata for $partition.$table.$it")
         if (column.jdbcType.isNumeric() && value is String) value.toDouble() else value
     }
     val statementColumns = primaryKeyColumns.joinToString(separator = ", ") { "$it = ?" }
-    val selectSqlStatement = "SELECT * FROM $schema.$table WHERE $statementColumns"
+    val selectSqlStatement = "SELECT * FROM $partition.$table WHERE $statementColumns"
 
-    connection.prepareStatement(selectSqlStatement).use { statement ->
+    return connection.prepareStatement(selectSqlStatement).use { statement ->
         primaryKeyValues.forEachIndexed { index, value -> statement.setParameter(index + 1, value) }
         statement.executeQuery().use { resultSet ->
-            return@retrieveSingleRow if (resultSet.next()) {
+            if (resultSet.next()) {
                 tableColumns.map { it to resultSet.getObject(it).autoConvertArray() }.toMap()
             } else {
                 null

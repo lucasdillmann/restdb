@@ -7,16 +7,16 @@ import br.com.dillmann.restdb.domain.data.getPage.jdbc.escapeSql
 import br.com.dillmann.restdb.domain.data.getPage.sorting.SortColumn
 import br.com.dillmann.restdb.domain.data.utils.autoConvertArray
 import br.com.dillmann.restdb.domain.data.utils.setParameter
-import br.com.dillmann.restdb.domain.data.validateSchemaAndTableName
-import br.com.dillmann.restdb.domain.metadata.findTableColumns
+import br.com.dillmann.restdb.domain.data.validatePartitionAndTableName
+import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 
 /**
- * Executes a SELECT operation in database provided [schemaName] and [tableName] using a paginated strategy
+ * Executes a SELECT operation in database provided [partitionName] and [tableName] using a paginated strategy
  *
- * @param schemaName Schema name
+ * @param partitionName Partition name
  * @param tableName Table name
  * @param pageNumber Page number, starting at 0
  * @param pageSize Page size (how much rows per page)
@@ -27,7 +27,7 @@ import java.sql.ResultSet
  * @since 1.0.0, 2020-03-27
  */
 fun findPage(
-    schemaName: String,
+    partitionName: String,
     tableName: String,
     pageNumber: Long,
     pageSize: Long,
@@ -35,11 +35,11 @@ fun findPage(
     projection: Set<String>?,
     filter: JdbcPredicate?
 ): Page {
-    ConnectionPool.startConnection().use { connection ->
-        validateSchemaAndTableName(connection, schemaName, tableName)
-        val allColumns = findTableColumns(connection, schemaName, tableName).keys
+    return ConnectionPool.startConnection().use { connection ->
+        validatePartitionAndTableName(connection, partitionName, tableName)
+        val allColumns = MetadataResolverFactory.build().findTableColumns(connection, partitionName, tableName).keys
         val (pageSql, countSql, parameters) =
-            SqlBuilder(schemaName, tableName, allColumns, pageSize, pageNumber, projection, sorting, filter).build()
+            SqlBuilder(partitionName, tableName, allColumns, pageSize, pageNumber, projection, sorting, filter).build()
 
         val totalCount = connection
             .prepareStatement(countSql, parameters)
@@ -53,8 +53,8 @@ fun findPage(
             .executeQuery()
             .getResults(projection ?: allColumns)
 
-        return@findPage Page(
-            schemaName = schemaName,
+        Page(
+            partitionName = partitionName,
             tableName = tableName,
             pageNumber = pageNumber,
             pageSize = pageSize,

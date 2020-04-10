@@ -11,6 +11,8 @@ val mysqlJdbcDriverVersion: String by project
 val mockkVersion: String by project
 val junitVersion: String by project
 val hamcrestVersion: String by project
+val mysqlJdbcVersion: String by project
+val mariadbJdbcVersion: String by project
 
 plugins {
     // Kotlin JVM
@@ -56,6 +58,8 @@ dependencies {
     // JDBC
     implementation("com.zaxxer:HikariCP:$hikariCpVersion")
     implementation("org.postgresql:postgresql:$postgreSqlJdbcDriverVersion")
+    implementation("mysql:mysql-connector-java:$mysqlJdbcVersion")
+    implementation("org.mariadb.jdbc:mariadb-java-client:$mariadbJdbcVersion")
 
     // Apache Commons
     implementation("org.apache.commons:commons-text:$apacheCommonsTextVersion")
