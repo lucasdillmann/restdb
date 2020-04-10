@@ -23,7 +23,7 @@ object OffsetSyntaxBuilder {
      * Detects current SGBD and returns a compatible SQL generator
      */
     private fun resolveSyntax(): (Long, Long) -> String =
-        when(DriverTypeResolver.current()) {
+        when (DriverTypeResolver.current()) {
             DriverType.MYSQL -> { offset, pageSize -> "LIMIT $offset, $pageSize" }
             DriverType.POSTGRESQL -> { offset, pageSize -> "OFFSET $offset FETCH NEXT $pageSize ROWS ONLY" }
             DriverType.SQL_SERVER -> { offset, pageSize -> "OFFSET $offset ROWS FETCH NEXT $pageSize ROWS ONLY" }

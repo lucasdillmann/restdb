@@ -2,11 +2,15 @@ package br.com.dillmann.restdb.domain.data.getPage.jdbc
 
 import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicate
 import br.com.dillmann.restdb.domain.data.getPage.sorting.SortColumn
+import br.com.dillmann.restdb.domain.data.getPage.sorting.SortDirection
 import br.com.dillmann.restdb.domain.data.getPage.sorting.asSqlInstructions
+import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
+import java.sql.Connection
 
 /**
  * SQL builder for paginated queries
  *
+ * @param connection JDBC Connection
  * @param partition Database partition name
  * @param table Table name
  * @param columns All columns available in the [table] of the [partition]
@@ -19,6 +23,7 @@ import br.com.dillmann.restdb.domain.data.getPage.sorting.asSqlInstructions
  * @since 1.0.0, 2020-03-30
  */
 class SqlBuilder(
+    private val connection: Connection,
     private val partition: String,
     private val table: String,
     private val columns: Set<String>,
@@ -60,7 +65,8 @@ class SqlBuilder(
      */
     private fun buildRawSql(): Pair<String, String> {
         val offset = pageNumber * pageSize
-        val sortingSql = sorting?.asSqlInstructions() ?: ""
+        val sortingColumns = sorting ?: defaultSorting(partition, table)
+        val sortingSql = sortingColumns.asSqlInstructions()
         val columnsSql = projection?.joinToString() ?: columns.joinToString()
         val filterSql = filter?.sqlInstructions?.let { "WHERE $it" } ?: ""
         val offsetSql = OffsetSyntaxBuilder.build(offset, pageSize)
@@ -80,6 +86,28 @@ class SqlBuilder(
 
         return pageSql to countSql
     }
+
+    /**
+     * Builds a default sorting instructions using table primary keys when available or all table
+     * columns otherwise
+     *
+     * @param partition Partition name
+     * @param table Table name
+     */
+    private fun defaultSorting(partition: String, table: String): Set<SortColumn> {
+        val metadataResolver = MetadataResolverFactory.build()
+        val toSorting: Set<String>.() -> Set<SortColumn> = {
+            map { SortColumn(it, SortDirection.ASC) }.toSet()
+        }
+
+        val primaryKeys = metadataResolver
+            .findTablePrimaryKeyColumns(connection, partition, table)
+            .toSorting()
+
+        return if (primaryKeys.isNotEmpty()) primaryKeys
+        else columns.toSorting()
+    }
+
 
     /**
      * Replaces the named parameters from SQL with native, JDBC supported value placeholders

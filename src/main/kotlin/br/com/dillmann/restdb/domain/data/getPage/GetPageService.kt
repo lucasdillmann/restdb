@@ -39,7 +39,10 @@ fun findPage(
         validatePartitionAndTableName(connection, partitionName, tableName)
         val allColumns = MetadataResolverFactory.build().findTableColumns(connection, partitionName, tableName).keys
         val (pageSql, countSql, parameters) =
-            SqlBuilder(partitionName, tableName, allColumns, pageSize, pageNumber, projection, sorting, filter).build()
+            SqlBuilder(
+                connection, partitionName, tableName, allColumns,
+                pageSize, pageNumber, projection, sorting, filter
+            ).build()
 
         val totalCount = connection
             .prepareStatement(countSql, parameters)

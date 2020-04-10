@@ -13,6 +13,7 @@ val junitVersion: String by project
 val hamcrestVersion: String by project
 val mysqlJdbcVersion: String by project
 val mariadbJdbcVersion: String by project
+val msSqlServerJdbcVersion: String by project
 
 plugins {
     // Kotlin JVM
@@ -60,6 +61,8 @@ dependencies {
     implementation("org.postgresql:postgresql:$postgreSqlJdbcDriverVersion")
     implementation("mysql:mysql-connector-java:$mysqlJdbcVersion")
     implementation("org.mariadb.jdbc:mariadb-java-client:$mariadbJdbcVersion")
+    implementation("com.microsoft.sqlserver:mssql-jdbc:$msSqlServerJdbcVersion")
+
 
     // Apache Commons
     implementation("org.apache.commons:commons-text:$apacheCommonsTextVersion")

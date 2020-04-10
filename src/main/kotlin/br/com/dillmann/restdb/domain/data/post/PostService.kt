@@ -4,8 +4,8 @@ import br.com.dillmann.restdb.core.jdbc.ConnectionPool
 import br.com.dillmann.restdb.core.jdbc.runInTransaction
 import br.com.dillmann.restdb.domain.data.utils.retrieveSingleRow
 import br.com.dillmann.restdb.domain.data.utils.setParameter
-import br.com.dillmann.restdb.domain.data.validateRequestBody
 import br.com.dillmann.restdb.domain.data.validatePartitionAndTableName
+import br.com.dillmann.restdb.domain.data.validateRequestBody
 import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import java.sql.Connection
 
@@ -64,3 +64,4 @@ private fun persistRow(
         }
     }
 }
+

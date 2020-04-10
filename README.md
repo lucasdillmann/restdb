@@ -22,7 +22,7 @@ Development goals and status:
 |Evolve README file|In progress|
 |OpenAPI support|Pending|
 |Support for PostgreSQL|Done| 
-|Support for Microsoft SQL Server|Pending| 
+|Support for Microsoft SQL Server|Done| 
 |Support for Oracle Database|Pending| 
 |Support for MySQL/MariaDB|Done| 
 
