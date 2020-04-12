@@ -23,6 +23,5 @@ Development goals and status:
 |OpenAPI support|Pending|
 |Support for PostgreSQL|Done| 
 |Support for Microsoft SQL Server|Done| 
-|Support for Oracle Database|Pending| 
 |Support for MySQL/MariaDB|Done| 
 

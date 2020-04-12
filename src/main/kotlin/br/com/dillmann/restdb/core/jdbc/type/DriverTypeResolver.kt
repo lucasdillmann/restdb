@@ -27,7 +27,6 @@ object DriverTypeResolver {
             in listOf("mysql", "mariadb") -> DriverType.MYSQL
             "postgresql" -> DriverType.POSTGRESQL
             "sqlserver" -> DriverType.SQL_SERVER
-            "oracle" -> DriverType.ORACLE
             else -> error("Unsupported SGBD: $sgbd")
         }
     }

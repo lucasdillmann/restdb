@@ -26,7 +26,6 @@ object MetadataResolverFactory {
     private fun resolveCompatibleImplementation(): MetadataResolver =
         when (DriverTypeResolver.current()) {
             DriverType.MYSQL -> CatalogBasedMetadataResolver
-            DriverType.ORACLE -> SchemaBasedMetadataResolver
             DriverType.POSTGRESQL -> SchemaBasedMetadataResolver
             DriverType.SQL_SERVER -> SchemaBasedMetadataResolver
         }

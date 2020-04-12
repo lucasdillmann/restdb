@@ -27,7 +27,6 @@ object OffsetSyntaxBuilder {
             DriverType.MYSQL -> { offset, pageSize -> "LIMIT $offset, $pageSize" }
             DriverType.POSTGRESQL -> { offset, pageSize -> "OFFSET $offset FETCH NEXT $pageSize ROWS ONLY" }
             DriverType.SQL_SERVER -> { offset, pageSize -> "OFFSET $offset ROWS FETCH NEXT $pageSize ROWS ONLY" }
-            DriverType.ORACLE -> { offset, pageSize -> "OFFSET $offset ROWS FETCH NEXT $pageSize ROWS ONLY" }
         }
 
 }

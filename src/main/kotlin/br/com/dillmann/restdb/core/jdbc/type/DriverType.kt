@@ -9,6 +9,5 @@ package br.com.dillmann.restdb.core.jdbc.type
 enum class DriverType {
     POSTGRESQL,
     MYSQL,
-    SQL_SERVER,
-    ORACLE
+    SQL_SERVER
 }
