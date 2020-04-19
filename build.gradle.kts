@@ -14,6 +14,8 @@ val hamcrestVersion: String by project
 val mysqlJdbcVersion: String by project
 val mariadbJdbcVersion: String by project
 val msSqlServerJdbcVersion: String by project
+val swaggerModelsVersion: String by project
+val jacksonVersion: String by project
 
 plugins {
     // Kotlin JVM
@@ -51,7 +53,11 @@ dependencies {
     // Ktor
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-gson:$ktorVersion")
+    implementation("io.ktor:ktor-jackson:$ktorVersion")
+
+    // Jackson
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
 
     // Logback
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
@@ -63,6 +69,8 @@ dependencies {
     implementation("org.mariadb.jdbc:mariadb-java-client:$mariadbJdbcVersion")
     implementation("com.microsoft.sqlserver:mssql-jdbc:$msSqlServerJdbcVersion")
 
+    // OpenAPI
+    implementation("io.swagger.core.v3:swagger-models:$swaggerModelsVersion")
 
     // Apache Commons
     implementation("org.apache.commons:commons-text:$apacheCommonsTextVersion")

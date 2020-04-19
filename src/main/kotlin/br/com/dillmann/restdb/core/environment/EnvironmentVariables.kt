@@ -10,9 +10,10 @@ object EnvironmentVariables {
     val jdbcUrl by env()
     val jdbcUsername by env()
     val jdbcPassword by env()
-    val jdbcMaximumConnections by env(DEFAULT_JDBC_MAXIMUM_CONNECTIONS) { it.toInt() }
-    val serverPort by env(DEFAULT_SERVER_PORT) { it.toInt() }
-    val serverHost by env(DEFAULT_SERVER_HOST)
-    val enableRequestTracing by env(DEFAULT_ENABLE_REQUEST_TRACING) { it.toBoolean() }
-    val logLevel by env(DEFAULT_LOG_LEVEL)
+    val jdbcMaximumConnections by env(JDBC_MAXIMUM_CONNECTIONS_DEFAULT_VALUE) { it.toInt() }
+    val serverPort by env(SERVER_PORT_DEFAULT_VALUE) { it.toInt() }
+    val serverHost by env(SERVER_HOST_DEFAULT_VALUE)
+    val enableRequestTracing by env(ENABLE_REQUEST_TRACING_DEFAULT_VALUE) { it.toBoolean() }
+    val enableCors by env(ENABLE_CORS_DEFAULT_VALUE) { it.toBoolean() }
+    val logLevel by env(LOG_LEVEL_DEFAULT_VALUE)
 }

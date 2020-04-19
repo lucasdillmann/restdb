@@ -20,6 +20,6 @@ fun Application.installErrorHandlers() {
         sqlExceptionHandler()
         filterDslSyntaxExceptionHandler()
         httpExceptionHandler()
-        jsonParserExceptionHandler()
+        jsonProcessingExceptionHandler()
     }
 }

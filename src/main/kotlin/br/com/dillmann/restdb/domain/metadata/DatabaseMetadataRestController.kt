@@ -16,5 +16,9 @@ fun Routing.metadataEndpoints() {
         get {
             handleGetMetadata(call)
         }
+
+        get ("/openapi.json") {
+            handleGetOpenApi(call)
+        }
     }
 }

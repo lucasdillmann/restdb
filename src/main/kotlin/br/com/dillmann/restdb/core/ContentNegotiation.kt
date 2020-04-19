@@ -1,10 +1,17 @@
 package br.com.dillmann.restdb.core
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.*
-import io.ktor.gson.gson
 import io.ktor.http.ContentType
+import io.ktor.jackson.jackson
 
 /**
  * Extension function for [Application] for Ktor content negotiation
@@ -14,12 +21,12 @@ import io.ktor.http.ContentType
  */
 fun Application.installContentNegotiation() {
     install(ContentNegotiation) {
-        gson(contentType = ContentType.Application.Json) { // JSON
-            serializeNulls()
+        jackson(contentType = ContentType.Application.Json) { // JSON
+            configureDefaults()
         }
 
-        gson(contentType = ContentType.parse("application/merge-patch+json")) { // JSON Merge Patch
-            serializeNulls()
+        jackson(contentType = ContentType.parse("application/merge-patch+json")) { // JSON Merge Patch
+            configureDefaults()
         }
     }
 
@@ -29,4 +36,15 @@ fun Application.installContentNegotiation() {
     }
 
     install(AutoHeadResponse)
+}
+
+fun ObjectMapper.configureDefaults(): ObjectMapper {
+    disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    enable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
+    enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    registerModule(KotlinModule())
+    registerModule(Jdk8Module())
+    registerModule(JavaTimeModule())
+    setSerializationInclusion(JsonInclude.Include.ALWAYS)
+    return this
 }

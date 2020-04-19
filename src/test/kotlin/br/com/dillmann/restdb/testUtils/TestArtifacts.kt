@@ -35,5 +35,12 @@ fun randomInt() =
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-04-02
  */
+fun randomLong() =
+    Random.nextLong()
+
+/**
+ * @author Lucas Dillmann
+ * @since 1.0.0, 2020-04-02
+ */
 fun randomPositiveInt() =
     randomInt().let { if (it < 0) it * -1 else it }
