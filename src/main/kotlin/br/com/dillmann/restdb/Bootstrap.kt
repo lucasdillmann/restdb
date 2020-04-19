@@ -1,6 +1,7 @@
 package br.com.dillmann.restdb
 
 import br.com.dillmann.restdb.core.EmbeddedServer
+import br.com.dillmann.restdb.core.ApplicationBanner
 import br.com.dillmann.restdb.core.jdbc.ConnectionDetails
 import br.com.dillmann.restdb.core.jdbc.ConnectionValidator
 import br.com.dillmann.restdb.core.log.LogLevelConfiguration
@@ -12,6 +13,7 @@ import br.com.dillmann.restdb.core.log.LogLevelConfiguration
  * @since 1.0.0, 2020-03-27
  */
 fun main() {
+    ApplicationBanner.print()
     LogLevelConfiguration.configure()
     ConnectionValidator.checkJdbcConnectionState()
     ConnectionDetails.printProductDetails()

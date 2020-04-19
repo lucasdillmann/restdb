@@ -1,5 +1,6 @@
 package br.com.dillmann.restdb
 
+import br.com.dillmann.restdb.core.ApplicationBanner
 import br.com.dillmann.restdb.core.EmbeddedServer
 import br.com.dillmann.restdb.core.jdbc.ConnectionDetails
 import br.com.dillmann.restdb.core.jdbc.ConnectionValidator
@@ -17,7 +18,8 @@ class BootstrapUnitTests {
 
     @Before
     fun setUp() {
-        mockkObject(EmbeddedServer, LogLevelConfiguration, ConnectionValidator, ConnectionDetails)
+        mockkObject(ApplicationBanner, EmbeddedServer, LogLevelConfiguration, ConnectionValidator, ConnectionDetails)
+        every { ApplicationBanner.print() } just Runs
         every { EmbeddedServer.start() } just Runs
         every { LogLevelConfiguration.configure() } just Runs
         every { ConnectionValidator.checkJdbcConnectionState() } just Runs
@@ -27,6 +29,15 @@ class BootstrapUnitTests {
     @After
     fun tearDown() {
         unmockkAll()
+    }
+
+    @Test
+    fun `it should print application banner`() {
+        // execution
+        main()
+
+        // validation
+        verify { ApplicationBanner.print() }
     }
 
     @Test
