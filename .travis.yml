@@ -21,7 +21,7 @@ stages:
 jobs:
   include:
     - stage: build
-      script: ./gradlew clean build -x test
+      script: ./gradlew assemble
     - stage: quality assurance
       script: ./gradlew test
     - stage: quality assurance
