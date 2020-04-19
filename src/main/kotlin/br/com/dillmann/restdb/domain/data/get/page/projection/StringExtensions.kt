@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.data.getPage.projection
+package br.com.dillmann.restdb.domain.data.get.page.projection
 
 /**
  * Converts a [String] into SQL column names using comma as delimiter/separator, producing a [Set] of [String] as

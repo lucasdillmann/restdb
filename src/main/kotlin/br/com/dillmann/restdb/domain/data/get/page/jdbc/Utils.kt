@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.data.getPage.jdbc
+package br.com.dillmann.restdb.domain.data.get.page.jdbc
 
 import java.net.URLDecoder
 

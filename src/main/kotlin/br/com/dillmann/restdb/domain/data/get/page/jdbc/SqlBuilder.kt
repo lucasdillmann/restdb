@@ -1,9 +1,9 @@
-package br.com.dillmann.restdb.domain.data.getPage.jdbc
+package br.com.dillmann.restdb.domain.data.get.page.jdbc
 
 import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicate
-import br.com.dillmann.restdb.domain.data.getPage.sorting.SortColumn
-import br.com.dillmann.restdb.domain.data.getPage.sorting.SortDirection
-import br.com.dillmann.restdb.domain.data.getPage.sorting.asSqlInstructions
+import br.com.dillmann.restdb.domain.data.get.page.sorting.SortColumn
+import br.com.dillmann.restdb.domain.data.get.page.sorting.SortDirection
+import br.com.dillmann.restdb.domain.data.get.page.sorting.asSqlInstructions
 import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import java.sql.Connection
 

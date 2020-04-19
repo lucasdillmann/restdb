@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.data.getRow
+package br.com.dillmann.restdb.domain.data.get.singleRow
 
 import br.com.dillmann.restdb.core.jdbc.ConnectionPool
 import br.com.dillmann.restdb.domain.data.utils.retrieveSingleRow

@@ -1,6 +1,6 @@
-package br.com.dillmann.restdb.domain.data.getPage
+package br.com.dillmann.restdb.domain.data.get.page
 
-import br.com.dillmann.restdb.domain.data.getPage.sorting.SortColumn
+import br.com.dillmann.restdb.domain.data.get.page.sorting.SortColumn
 
 /**
  * Paginated select result details

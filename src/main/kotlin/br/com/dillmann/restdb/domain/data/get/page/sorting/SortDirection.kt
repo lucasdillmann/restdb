@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.data.getPage.sorting
+package br.com.dillmann.restdb.domain.data.get.page.sorting
 
 /**
  * Enumeration of supported sorting directions

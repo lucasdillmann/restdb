@@ -1,10 +1,10 @@
-package br.com.dillmann.restdb.domain.data.getPage.jdbc
+package br.com.dillmann.restdb.domain.data.get.page.jdbc
 
 import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicate
-import br.com.dillmann.restdb.domain.data.getPage.exception.InvalidColumnNamesException
-import br.com.dillmann.restdb.domain.data.getPage.exception.InvalidPageNumberException
-import br.com.dillmann.restdb.domain.data.getPage.exception.InvalidPageSizeException
-import br.com.dillmann.restdb.domain.data.getPage.sorting.SortColumn
+import br.com.dillmann.restdb.domain.data.get.page.exception.InvalidColumnNamesException
+import br.com.dillmann.restdb.domain.data.get.page.exception.InvalidPageNumberException
+import br.com.dillmann.restdb.domain.data.get.page.exception.InvalidPageSizeException
+import br.com.dillmann.restdb.domain.data.get.page.sorting.SortColumn
 
 /**
  * Validates if the SQL can be generated successfully with parameters from user request

@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.data.getPage.exception
+package br.com.dillmann.restdb.domain.data.get.page.exception
 
 import br.com.dillmann.restdb.core.statusPages.exceptions.BadRequestException
 

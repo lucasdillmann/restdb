@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.data.getPage.sorting
+package br.com.dillmann.restdb.domain.data.get.page.sorting
 
 /**
  * Converts a [Set] of [SortColumn] into sorting SQL intructions

@@ -1,8 +1,8 @@
-package br.com.dillmann.restdb.domain.data.getPage
+package br.com.dillmann.restdb.domain.data.get.page
 
-import br.com.dillmann.restdb.domain.data.getPage.filter.asFilterPredicate
-import br.com.dillmann.restdb.domain.data.getPage.projection.asProjectionInstructions
-import br.com.dillmann.restdb.domain.data.getPage.sorting.asSortingInstructions
+import br.com.dillmann.restdb.domain.data.get.page.filter.asFilterPredicate
+import br.com.dillmann.restdb.domain.data.get.page.projection.asProjectionInstructions
+import br.com.dillmann.restdb.domain.data.get.page.sorting.asSortingInstructions
 import br.com.dillmann.restdb.domain.data.utils.getQueryParameter
 import br.com.dillmann.restdb.domain.data.utils.mainRequestParameters
 import io.ktor.application.ApplicationCall

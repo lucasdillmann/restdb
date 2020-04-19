@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.data.getPage.jdbc
+package br.com.dillmann.restdb.domain.data.get.page.jdbc
 
 import br.com.dillmann.restdb.core.jdbc.type.DriverType
 import br.com.dillmann.restdb.core.jdbc.type.DriverTypeResolver

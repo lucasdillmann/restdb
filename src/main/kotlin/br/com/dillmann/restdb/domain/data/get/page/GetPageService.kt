@@ -1,10 +1,10 @@
-package br.com.dillmann.restdb.domain.data.getPage
+package br.com.dillmann.restdb.domain.data.get.page
 
 import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicate
 import br.com.dillmann.restdb.core.jdbc.ConnectionPool
-import br.com.dillmann.restdb.domain.data.getPage.jdbc.SqlBuilder
-import br.com.dillmann.restdb.domain.data.getPage.jdbc.escapeSql
-import br.com.dillmann.restdb.domain.data.getPage.sorting.SortColumn
+import br.com.dillmann.restdb.domain.data.get.page.jdbc.SqlBuilder
+import br.com.dillmann.restdb.domain.data.get.page.jdbc.escapeSql
+import br.com.dillmann.restdb.domain.data.get.page.sorting.SortColumn
 import br.com.dillmann.restdb.domain.data.utils.autoConvertArray
 import br.com.dillmann.restdb.domain.data.utils.setParameter
 import br.com.dillmann.restdb.domain.data.validatePartitionAndTableName

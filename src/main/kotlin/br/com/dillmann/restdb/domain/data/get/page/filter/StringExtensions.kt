@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.data.getPage.filter
+package br.com.dillmann.restdb.domain.data.get.page.filter
 
 import br.com.dillmann.restdb.core.filterDsl.FilterDslParserFacade
 import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicate

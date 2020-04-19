@@ -1,7 +1,7 @@
-package br.com.dillmann.restdb.domain.data.getPage.exception
+package br.com.dillmann.restdb.domain.data.get.page.exception
 
 import br.com.dillmann.restdb.core.statusPages.exceptions.BadRequestException
-import br.com.dillmann.restdb.domain.data.getPage.sorting.SortDirection
+import br.com.dillmann.restdb.domain.data.get.page.sorting.SortDirection
 
 /**
  * [BadRequestException] specialization for user provided invalid sorting direction

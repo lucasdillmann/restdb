@@ -1,8 +1,8 @@
 package br.com.dillmann.restdb.domain.data
 
 import br.com.dillmann.restdb.domain.data.delete.handleDelete
-import br.com.dillmann.restdb.domain.data.getPage.handleGetPage
-import br.com.dillmann.restdb.domain.data.getRow.handleGetRow
+import br.com.dillmann.restdb.domain.data.get.page.handleGetPage
+import br.com.dillmann.restdb.domain.data.get.singleRow.handleGetRow
 import br.com.dillmann.restdb.domain.data.patch.handlePatch
 import br.com.dillmann.restdb.domain.data.post.handlePost
 import br.com.dillmann.restdb.domain.data.put.handlePut

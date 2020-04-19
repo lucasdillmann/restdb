@@ -1,6 +1,6 @@
-package br.com.dillmann.restdb.domain.data.getPage.sorting
+package br.com.dillmann.restdb.domain.data.get.page.sorting
 
-import br.com.dillmann.restdb.domain.data.getPage.exception.InvalidSortingDirectionException
+import br.com.dillmann.restdb.domain.data.get.page.exception.InvalidSortingDirectionException
 
 /**
  * Converts a [String] into a [Set] of [SortColumn]

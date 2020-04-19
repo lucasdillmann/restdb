@@ -1,4 +1,4 @@
-package br.com.dillmann.restdb.domain.data.getRow
+package br.com.dillmann.restdb.domain.data.get.singleRow
 
 import br.com.dillmann.restdb.domain.data.utils.mainRequestParameters
 import br.com.dillmann.restdb.domain.data.utils.rowId
