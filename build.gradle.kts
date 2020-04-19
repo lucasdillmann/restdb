@@ -20,16 +20,16 @@ val jacksonVersion: String by project
 plugins {
     // Kotlin JVM
     application
-    kotlin("jvm") version "1.3.70"
+    kotlin("jvm") version "1.3.72"
 
     // ANTLR
     antlr
 
     // Docker
-    id("com.palantir.docker") version "0.22.1"
+    id("com.palantir.docker") version "0.25.0"
 
     // Detekt
-    id("io.gitlab.arturbosch.detekt") version "1.1.1"
+    id("io.gitlab.arturbosch.detekt") version "1.7.4"
 
 }
 
@@ -101,10 +101,6 @@ tasks {
         ))
 
         name = "lucasdillmann1/restdb:$version"
-    }
-
-    check {
-        dependsOn.remove(detekt.get())
     }
 
     withType<KotlinCompile> {
