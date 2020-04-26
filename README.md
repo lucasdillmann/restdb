@@ -18,8 +18,8 @@ Development goals and status:
 |Unit tests source code|In progress|
 |Validation of a minimum unit tests source code coverage|Pending|
 |Unit tests execution on CI/CD|Done|
-|Integration tests implementation using Postman|Pending|
-|Integration tests on CI/CD|Pending|
+|Integration tests implementation using Postman|In progress|
+|Integration tests on CI/CD|Done|
 |Evolve README file|In progress|
 |OpenAPI support|Done|
 |Support for PostgreSQL|Done| 

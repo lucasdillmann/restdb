@@ -1,0 +1,450 @@
+{
+	"info": {
+		"_postman_id": "058df1b9-b4ff-4817-b0d4-a2dd06f15b2e",
+		"name": "restdb",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "metadata",
+			"item": [
+				{
+					"name": "Get metadata in raw format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "560a4db9-6481-4c82-8880-ae88af47cd77",
+								"exec": [
+									"pm.test(\"Response status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response type is a JSON\", () => {",
+									"    const contentType = pm.response.headers.get(\"Content-type\");",
+									"    pm.expect(contentType).to.equals(\"application/json; charset=UTF-8\");",
+									"});",
+									"",
+									"// TODO: Validate response contents"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/metadata",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"metadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get metadata as OpenAPI",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "56aa842b-524f-40ef-9534-17d98524cff1",
+								"exec": [
+									"pm.test(\"Response status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response type is a JSON\", () => {",
+									"    const contentType = pm.response.headers.get(\"Content-type\");",
+									"    pm.expect(contentType).to.equals(\"application/json; charset=UTF-8\");",
+									"});",
+									"",
+									"// TODO: Validate response contents"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/metadata/openapi.json",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"metadata",
+								"openapi.json"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "data",
+			"item": [
+				{
+					"name": "Get a page of rows of an existent table",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3e8f5b4f-9e5e-44b5-b0a9-1bfcb6750ae8",
+								"exec": [
+									"const body = pm.response.json();",
+									"",
+									"pm.test(\"Response status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response type is a JSON\", () => {",
+									"    const contentType = pm.response.headers.get(\"Content-type\");",
+									"    pm.expect(contentType).to.equals(\"application/json; charset=UTF-8\");",
+									"});",
+									"",
+									"pm.test(\"Response body contains expected database table details\", () => {",
+									"    pm.expect(body.partitionName).to.equals(\"public\");",
+									"    pm.expect(body.tableName).to.equals(\"product\");",
+									"});",
+									"",
+									"pm.test(\"Response body contains expected page details\", () => {",
+									"    pm.expect(body.pageNumber).to.equals(0);",
+									"    pm.expect(body.pageSize).to.equals(10);",
+									"    pm.expect(body.pageCount).to.equals(9);",
+									"    pm.expect(body.pageElementsCount).to.equals(10);",
+									"    pm.expect(body.totalElementsCount).to.equals(80);",
+									"    pm.expect(body.firstPage).to.equals(true);",
+									"    pm.expect(body.lastPage).to.equals(false);",
+									"    ",
+									"});",
+									"",
+									"pm.test(\"Response body contains expected sorting details\", () => {",
+									"    pm.expect(body.sorting[0].columnName).to.equals(\"id\");",
+									"    pm.expect(body.sorting[0].direction).to.equals(\"ASC\");",
+									"});",
+									"",
+									"pm.test(\"Response body contains expected projection details\", () => {",
+									"    pm.expect(body.projection).to.deep.equal(['id', 'description']);",
+									"});",
+									"",
+									"pm.test(\"Response body contains expected elements\", () => {",
+									"    const expectedValues = [",
+									"        { \"id\": 1, \"description\": \"Foil Wrap\" },",
+									"        { \"id\": 2, \"description\": \"Cheese - Mix\" },",
+									"        { \"id\": 3, \"description\": \"Aspic - Light\" },",
+									"        { \"id\": 4, \"description\": \"Wine - Magnotta - Bel Paese White\" },",
+									"        { \"id\": 5, \"description\": \"Glaze - Apricot\" },",
+									"        { \"id\": 6, \"description\": \"Easy Off Oven Cleaner\" },",
+									"        { \"id\": 7, \"description\": \"Peas Snow\" },",
+									"        { \"id\": 8, \"description\": \"Bread - French Stick\" },",
+									"        { \"id\": 9, \"description\": \"Turkey Leg With Drum And Thigh\" },",
+									"        { \"id\": 10, \"description\": \"Bandage - Fexible 1x3\" }",
+									"    ];",
+									"    ",
+									"    for(index = 0; index < expectedValues.length; index++) {",
+									"        pm.expect(body.elements[index].id).to.equal(expectedValues[index].id);",
+									"        pm.expect(body.elements[index].description).to.equal(expectedValues[index].description);",
+									"        pm.expect(body.elements[index].unit_price).to.equal(undefined);",
+									"        pm.expect(body.elements[index].long_description).to.equal(undefined);",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/data/public/product?pageSize=10&pageNumber=0&sort=id:asc&columns=id,description",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"data",
+								"public",
+								"product"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "sort",
+									"value": "id:asc"
+								},
+								{
+									"key": "columns",
+									"value": "id,description"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a page of rows of a non existent table",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "06232d07-b85f-4e39-aee7-915e6394cc30",
+								"exec": [
+									"const body = pm.response.json();",
+									"",
+									"pm.test(\"Response status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response type is a JSON\", () => {",
+									"    const contentType = pm.response.headers.get(\"Content-type\");",
+									"    pm.expect(contentType).to.equals(\"application/json; charset=UTF-8\");",
+									"});",
+									"",
+									"pm.test(\"Response body contains expected error details\", () => {",
+									"    pm.expect(body.statusCode).to.equals(400);",
+									"    pm.expect(body.statusDescription).to.equals(\"Bad Request\");",
+									"    pm.expect(body.uri).to.equals(\"/data/public/non_existent_table\");",
+									"    pm.expect(body.message).to.equals(\"Table non_existent_table do not exists in partition public\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/data/public/non_existent_table",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"data",
+								"public",
+								"non_existent_table"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a page of rows of a non existent partition",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "092584b2-f4cb-4e2a-bc47-bc75624d9535",
+								"exec": [
+									"const body = pm.response.json();",
+									"",
+									"pm.test(\"Response status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response type is a JSON\", () => {",
+									"    const contentType = pm.response.headers.get(\"Content-type\");",
+									"    pm.expect(contentType).to.equals(\"application/json; charset=UTF-8\");",
+									"});",
+									"",
+									"pm.test(\"Response body contains expected error details\", () => {",
+									"    pm.expect(body.statusCode).to.equals(400);",
+									"    pm.expect(body.statusDescription).to.equals(\"Bad Request\");",
+									"    pm.expect(body.uri).to.equals(\"/data/non_existent_partition/product\");",
+									"    pm.expect(body.message).to.equals(\"Partition non_existent_partition do not exists\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/data/non_existent_partition/product",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"data",
+								"non_existent_partition",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single row by an existent id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8c4a296-f554-494a-aa90-d162556e2031",
+								"exec": [
+									"const body = pm.response.json();",
+									"",
+									"pm.test(\"Response status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response type is a JSON\", () => {",
+									"    const contentType = pm.response.headers.get(\"Content-type\");",
+									"    pm.expect(contentType).to.equals(\"application/json; charset=UTF-8\");",
+									"});",
+									"",
+									"pm.test(\"Response body contains expected row details\", () => {",
+									"    pm.expect(body.id).to.equals(1);",
+									"    pm.expect(body.description).to.equals(\"Foil Wrap\");",
+									"    pm.expect(body.unit_price).to.equals(87.30);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/data/public/product/1",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"data",
+								"public",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single row by a non existent id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d2e5dffc-d1b1-4792-be75-ad72e2363fc8",
+								"exec": [
+									"const body = pm.response.json();",
+									"",
+									"pm.test(\"Response status code is 404\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Response type is a JSON\", () => {",
+									"    const contentType = pm.response.headers.get(\"Content-type\");",
+									"    pm.expect(contentType).to.equals(\"application/json; charset=UTF-8\");",
+									"});",
+									"",
+									"pm.test(\"Response body contains expected generic error informations\", () => {",
+									"    pm.expect(body.statusCode).to.equals(404);",
+									"    pm.expect(body.statusDescription).to.equals(\"Not Found\");",
+									"    pm.expect(body.uri).to.equals(\"/data/public/product/9999\");",
+									"    pm.expect(body.message).to.equals(\"No row found over table product on partition public with primary key value '9999'\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/data/public/product/9999",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"data",
+								"public",
+								"product",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "index",
+			"item": [
+				{
+					"name": "Get index contents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1fbb0def-7352-4d3f-828c-4acc23d35a4d",
+								"exec": [
+									"pm.test(\"Response status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response type is a JSON\", () => {",
+									"    const contentType = pm.response.headers.get(\"Content-type\");",
+									"    pm.expect(contentType).to.equals(\"application/json; charset=UTF-8\");",
+									"});",
+									"",
+									"// TODO: Validate response contents"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -74,6 +74,7 @@ fun ApplicationCall.mainRequestParameters(): Pair<String, String> {
     val tableName = parameters["table"] ?: throw MissingUriParameterException(
         "table"
     )
+
     return partitionName to tableName
 }
 

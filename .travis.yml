@@ -22,10 +22,38 @@ jobs:
   include:
     - stage: build
       script: ./gradlew assemble
+
     - stage: quality assurance
       script: ./gradlew test
+
     - stage: quality assurance
       script: ./gradlew detekt
+
+    - stage: quality assurance
+      install:
+        - npm i -g newman@4.5.0
+        - npm i -g newman-reporter-html@1.0.3
+      services:
+        - postgresql
+      env:
+        - RESTDB_JDBC_URL=jdbc:postgresql://localhost/restdb
+        - RESTDB_JDBC_USERNAME=postgres
+        - RESTDB_JDBC_PASSWORD=postgres
+        - RESTDB_ENABLE_CORS=true
+        - RESTDB_SERVER_HOST=localhost
+        - RESTDB_SERVER_PORT=8080
+        - RESTDB_EXTERNAL_URL=http://localhost:8080
+      script:
+        - psql --username=postgres --quiet --command='CREATE DATABASE restdb;'
+        - psql --username=postgres --quiet --dbname=restdb < src/integration-test/data/postgresql.sql
+        - ./gradlew run & echo $! > restdb.pid
+        - while ! echo exit | nc localhost 8080; do sleep 1; done
+        - 'newman run src/integration-test/collections/postgresql.json
+           -e src/integration-test/environments/default.json -r cli,html --reporter-html-template
+           src/integration-test/templates/htmlreport.hbs'
+      after_script:
+        - kill $(cat restdb.pid)
+
     - stage: release
       if: branch IN (master, development)
       services:

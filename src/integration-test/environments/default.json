@@ -1,0 +1,14 @@
+{
+	"id": "fbf1ea64-76ea-463b-9ed3-9f1e15ea7eae",
+	"name": "pipeline",
+	"values": [
+		{
+			"key": "url",
+			"value": "localhost:8080",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2020-04-26T13:53:37.036Z",
+	"_postman_exported_using": "Postman/7.23.0"
+}

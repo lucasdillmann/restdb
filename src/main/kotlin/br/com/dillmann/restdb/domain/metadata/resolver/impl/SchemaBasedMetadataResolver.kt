@@ -67,7 +67,7 @@ object SchemaBasedMetadataResolver : BasicMetadataResolver(), MetadataResolver {
      */
     override fun tableExists(connection: Connection, partitionName: String, tableName: String): Boolean {
         return connection.metaData
-            .getTables(null, partitionName, null, arrayOf("TABLE"))
+            .getTables(null, partitionName, tableName, arrayOf("TABLE"))
             .use { it.next() }
     }
 

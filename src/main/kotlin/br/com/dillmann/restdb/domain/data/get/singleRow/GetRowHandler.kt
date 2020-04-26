@@ -1,5 +1,6 @@
 package br.com.dillmann.restdb.domain.data.get.singleRow
 
+import br.com.dillmann.restdb.core.statusPages.exceptions.NotFoundException
 import br.com.dillmann.restdb.domain.data.utils.mainRequestParameters
 import br.com.dillmann.restdb.domain.data.utils.rowId
 import io.ktor.application.ApplicationCall
@@ -19,5 +20,5 @@ suspend fun handleGetRow(call: ApplicationCall) {
 
     findRow(partitionName, tableName, rowId)
         ?.let { call.respond(HttpStatusCode.OK, it) }
-        ?: call.respond(HttpStatusCode.NotFound)
+        ?: throw NotFoundException(partitionName, tableName, rowId)
 }
