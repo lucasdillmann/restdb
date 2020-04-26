@@ -30,7 +30,7 @@ fun retrieveSingleRow(
     val primaryKeyValues = primaryKeyColumns.map {
         val value = data[it]
         val column = columns[it] ?: error("Missing column metadata for $partition.$table.$it")
-        if (column.jdbcType.isNumeric() && value is String) value.toDouble() else value
+        if (column.jdbcType.isNumeric() && value is String) value.safeToDouble() else value
     }
     val statementColumns = primaryKeyColumns.joinToString(separator = ", ") { "$it = ?" }
     val selectSqlStatement = "SELECT * FROM $partition.$table WHERE $statementColumns"
@@ -46,6 +46,19 @@ fun retrieveSingleRow(
         }
     }
 }
+
+/**
+ * Converts a [String] to [Double]. If a conversion error happens, this functions absorves it and returns null.
+ *
+ * @author Lucas Dillmann
+ * @since 1.0.0, 2020-04-25
+ */
+private fun String.safeToDouble() =
+    try {
+        toDouble()
+    } catch (ex: NumberFormatException) {
+        null
+    }
 
 /**
  * When JDBC result object is an array, automatically converts it to an kotlin [Array] instance. When it is not,

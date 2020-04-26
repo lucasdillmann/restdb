@@ -100,7 +100,7 @@ tasks {
             "DIST_FILE" to "restdb-$version.tar"
         ))
 
-        name = "lucasdillmann1/restdb:$version"
+        name = "dillmann/restdb:$version"
     }
 
     withType<KotlinCompile> {

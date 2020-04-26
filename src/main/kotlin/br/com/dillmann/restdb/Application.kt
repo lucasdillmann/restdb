@@ -6,6 +6,7 @@ import br.com.dillmann.restdb.core.installContentNegotiation
 import br.com.dillmann.restdb.core.installCors
 import br.com.dillmann.restdb.core.installRequestTracing
 import br.com.dillmann.restdb.domain.data.dataEndpoints
+import br.com.dillmann.restdb.domain.index.indexEndpoints
 import br.com.dillmann.restdb.domain.metadata.metadataEndpoints
 import io.ktor.application.Application
 import io.ktor.routing.routing
@@ -34,6 +35,7 @@ fun Application.installRoutes() {
     routing {
         metadataEndpoints()
         dataEndpoints()
+        indexEndpoints()
         fallbackResponse()
     }
 }
