@@ -66,10 +66,8 @@ private fun buildExternalDocumentation(): ExternalDocumentation =
  * @since 1.0.0, 2020-04-12
  */
 private fun buildServers(): List<Server> {
-    val host = EnvironmentVariables.serverHost
-    val port = EnvironmentVariables.serverPort
     val server = Server().also {
-        it.url = "http://$host:$port"
+        it.url = EnvironmentVariables.externalUrl
     }
 
     return listOf(server)

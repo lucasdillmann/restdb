@@ -41,9 +41,8 @@ suspend fun handleGetIndex(call: ApplicationCall) {
  * @since 1.0.0, 2020-04-25
  */
 private fun link(rel: String, target: String): Link {
-    val host = EnvironmentVariables.serverHost
-    val port = EnvironmentVariables.serverPort
-    return Link(rel, "http://$host:$port$target")
+    val externalUrl = EnvironmentVariables.externalUrl
+    return Link(rel, "$externalUrl$target")
 }
 
 /**

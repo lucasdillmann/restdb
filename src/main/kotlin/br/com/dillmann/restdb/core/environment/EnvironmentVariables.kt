@@ -17,4 +17,5 @@ object EnvironmentVariables {
     val enableCors by env(ENABLE_CORS_DEFAULT_VALUE) { it.toBoolean() }
     val logLevel by env(LOG_LEVEL_DEFAULT_VALUE)
     val applicationVersion by env(APPLICATION_VERSION_DEFAULT_VALUE)
+    val externalUrl by env(EXTERNAL_URL_DEFAULT_VALUE)
 }
