@@ -85,15 +85,15 @@ private fun buildSchema(partition: Partition): Schemas =
 private fun buildSchema(partitionName: String, table: Table): Schemas {
     val baseName = "${partitionName}_${table.name}"
     val singleRowSchema = Schema<Any>().also {
-        it.name = "data_$baseName"
+        it.name = "${baseName}_row"
         it.type = "object"
         it.properties = table.columns.values.map(::buildSchema).toMap()
     }
     val pagedSchema = buildPageSchema(baseName)
 
     return listOf(
-        "data_$baseName" to singleRowSchema,
-        "paged_data_$baseName" to pagedSchema
+        "${baseName}_row" to singleRowSchema,
+        "${baseName}_page" to pagedSchema
     )
 }
 
@@ -139,11 +139,11 @@ private fun buildPageSchema(baseName: String): Schema<*> {
         it.name = "elements"
         it.type = JDBCType.ARRAY.toJsonType()
         it.items = Schema<Any>()
-        it.items.`$ref` = "#/components/schemas/data_$baseName"
+        it.items.`$ref` = "#/components/schemas/${baseName}_row"
     }
 
     return Schema<Any>().also {
-        it.name = "paged_data_$baseName"
+        it.name = "${baseName}_page"
         it.type = "object"
         it.properties = pageProperties.toMap()
     }
@@ -163,13 +163,6 @@ private fun buildSchema(column: Column): Pair<String, Schema<*>> {
         it.name = column.name
         it.nullable = column.nullable
         it.maxLength = column.size?.toInt()
-        it.extensions = mapOf(
-            "sqlTypeId" to column.typeId,
-            "jdbcType" to column.jdbcType,
-            "autoIncrement" to column.autoIncrement,
-            "ordinalPosition" to column.ordinalPosition,
-            "decimalDigits" to column.decimalDigits
-        )
 
         if (column.jdbcType == JDBCType.ARRAY)
             it.items = Schema<Any>()

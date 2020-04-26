@@ -3,11 +3,11 @@ package br.com.dillmann.restdb.domain.metadata.openapi
 import br.com.dillmann.restdb.domain.metadata.model.DatabaseMetadata
 import br.com.dillmann.restdb.domain.metadata.model.Table
 import br.com.dillmann.restdb.domain.metadata.openapi.operation.OperationBuilder
+import br.com.dillmann.restdb.domain.metadata.openapi.operation.OperationRequestFactory
 import io.ktor.http.HttpMethod
 import io.swagger.v3.oas.models.PathItem
 import io.swagger.v3.oas.models.Paths
 import io.swagger.v3.oas.models.Operation
-import io.swagger.v3.oas.models.parameters.Parameter
 
 /**
  * Converts a [DatabaseMetadata] into an OpenAPI [Paths] object
@@ -74,12 +74,7 @@ private fun buildPaths(partitionName: String, table: Table): Map<String, PathIte
  */
 private fun buildPathsById(partitionName: String, tableName: String, primaryKeyName: String): Pair<String, PathItem> {
     val url = "/data/$partitionName/$tableName/{$primaryKeyName}"
-    val parameter = Parameter().also {
-        it.name = primaryKeyName
-        it.description = "Primary key value for table $tableName under partition $partitionName"
-        it.required = true
-        it.allowEmptyValue = false
-    }
+    val parameter = OperationRequestFactory.buildPrimaryKeyParameter(partitionName, tableName, primaryKeyName)
 
     val operation: (HttpMethod) -> OperationBuilder = {
         OperationBuilder(

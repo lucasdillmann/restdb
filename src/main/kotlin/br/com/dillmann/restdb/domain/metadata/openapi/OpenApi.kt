@@ -44,6 +44,7 @@ private fun DatabaseMetadata.asOpenApiInfo(): Info =
     Info().also {
         it.title = "restdb"
         it.description = "HTTP REST APIs for $database using $driver"
+        it.version = EnvironmentVariables.applicationVersion
     }
 
 /**

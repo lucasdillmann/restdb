@@ -30,6 +30,8 @@ class OperationBuilder(
             if (method in methodsWithRequestBody)
                 it.requestBody = OperationRequestFactory.buildRequestBody(partition, table)
 
+            it.tags = listOf("$partition.$table")
+
             it.responses = when {
                 method in modificationMethods -> OperationResponseFactory.buildModificationResponses(partition, table)
                 paged -> OperationResponseFactory.buildPagedResponses(partition, table)

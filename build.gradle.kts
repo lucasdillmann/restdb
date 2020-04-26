@@ -95,9 +95,10 @@ tasks {
     docker {
         files(distTar.get().outputs.files)
 
-        val version = project.version
+        val version = project.version.toString()
         buildArgs(mapOf(
-            "DIST_FILE" to "restdb-$version.tar"
+            "DIST_FILE" to "restdb-$version.tar",
+            "APPLICATION_VERSION" to version
         ))
 
         name = "dillmann/restdb:$version"

@@ -16,4 +16,5 @@ object EnvironmentVariables {
     val enableRequestTracing by env(ENABLE_REQUEST_TRACING_DEFAULT_VALUE) { it.toBoolean() }
     val enableCors by env(ENABLE_CORS_DEFAULT_VALUE) { it.toBoolean() }
     val logLevel by env(LOG_LEVEL_DEFAULT_VALUE)
+    val applicationVersion by env(APPLICATION_VERSION_DEFAULT_VALUE)
 }

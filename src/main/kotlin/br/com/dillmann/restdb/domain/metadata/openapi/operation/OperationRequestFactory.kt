@@ -1,11 +1,14 @@
 package br.com.dillmann.restdb.domain.metadata.openapi.operation
 
+import br.com.dillmann.restdb.domain.metadata.openapi.toJsonFormat
+import br.com.dillmann.restdb.domain.metadata.openapi.toJsonType
 import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.media.Content
 import io.swagger.v3.oas.models.media.MediaType
 import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.parameters.Parameter
 import io.swagger.v3.oas.models.parameters.RequestBody
+import java.sql.JDBCType
 
 /**
  * OpenAPI request factory methods for [Operation] objects
@@ -28,7 +31,7 @@ object OperationRequestFactory {
 
             val mediaType = MediaType()
             mediaType.schema = Schema<Any>()
-            mediaType.schema.`$ref` = "#/components/schemas/data_${partitionName}_${tableName}"
+            mediaType.schema.`$ref` = "#/components/schemas/${partitionName}_${tableName}_row"
             it.content.addMediaType(JSON_MEDIA_TYPE, mediaType)
         }
 
@@ -46,17 +49,43 @@ object OperationRequestFactory {
             it.description = "Primary key of table $tableName over partition $partitionName"
             it.allowEmptyValue = false
             it.required = true
+            it.schema = Schema<Any>().type("string")
         }
 
     /**
      * Builds and returns a [List] of query [Parameter] objects for pagination controls
      */
     fun buildPageParameters(): List<Parameter> {
-        val page = buildPageParameter("pageNumber", "Page number to be returned", PAGE_EXAMPLE_VALUE)
-        val pageSize = buildPageParameter("pageSize", "How much rows each page should have", PAGE_SIZE_EXAMPLE_VALUE)
-        val sorting = buildPageParameter("sort", "Sorting instructions", "column_a:asc,column_b:desc")
-        val projection = buildPageParameter("columns", "Defines which columns should be returned", "column_a,column_b")
-        val filter = buildPageParameter("filter", "Filter instructions", "column_a.equals[25]||column_b.isNotNull")
+        val page = buildPageParameter(
+            "pageNumber",
+            "Page number to be returned",
+            PAGE_EXAMPLE_VALUE,
+            JDBCType.INTEGER
+        )
+        val pageSize = buildPageParameter(
+            "pageSize",
+            "How much rows each page should have",
+            PAGE_SIZE_EXAMPLE_VALUE,
+            JDBCType.INTEGER
+        )
+        val sorting = buildPageParameter(
+            "sort",
+            "Sorting instructions",
+            "column_a:asc,column_b:desc",
+            JDBCType.VARCHAR
+        )
+        val projection = buildPageParameter(
+            "columns",
+            "Defines which columns should be returned",
+            "column_a,column_b",
+            JDBCType.VARCHAR
+        )
+        val filter = buildPageParameter(
+            "filter",
+            "Filter instructions",
+            "column_a.equals[25]||column_b.isNotNull",
+            JDBCType.VARCHAR
+        )
 
         return listOf(page, pageSize, sorting, projection, filter)
     }
@@ -68,7 +97,7 @@ object OperationRequestFactory {
      * @param description Page control description
      * @param example Example value
      */
-    private fun buildPageParameter(name: String, description: String, example: Any) =
+    private fun buildPageParameter(name: String, description: String, example: Any, type: JDBCType) =
         Parameter().also {
             it.name = name
             it.`in` = "query"
@@ -76,5 +105,6 @@ object OperationRequestFactory {
             it.example = example
             it.required = false
             it.allowEmptyValue = false
+            it.schema = Schema<Any>().format(type.toJsonFormat()).type(type.toJsonType())
         }
 }

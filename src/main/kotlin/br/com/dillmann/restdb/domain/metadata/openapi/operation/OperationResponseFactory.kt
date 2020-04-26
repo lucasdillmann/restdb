@@ -53,7 +53,7 @@ object OperationResponseFactory {
     fun buildPagedResponses(partitionName: String, tableName: String): ApiResponses {
         val response = buildBasicResponses(partitionName, tableName)
         response["200"]!!.content[JSON_MEDIA_TYPE]!!.schema.`$ref` =
-            "#/components/schemas/paged_data_${partitionName}_${tableName}"
+            "#/components/schemas/${partitionName}_${tableName}_page"
         return response
     }
 
@@ -65,7 +65,7 @@ object OperationResponseFactory {
     private fun buildContentType(reference: String): Content {
         val mediaType = MediaType().also {
             it.schema = Schema<Any>()
-            it.schema.`$ref` = " \"#/components/schemas/$reference"
+            it.schema.`$ref` = "#/components/schemas/$reference"
         }
 
         return Content()
@@ -81,7 +81,7 @@ object OperationResponseFactory {
     private fun buildBasicResponses(partitionName: String, tableName: String): ApiResponses {
         val ok = ApiResponse().also {
             it.description = "Operation completed with success"
-            it.content = buildContentType("data_${partitionName}_${tableName}")
+            it.content = buildContentType("${partitionName}_${tableName}_row")
         }
 
         val result = ApiResponses()
