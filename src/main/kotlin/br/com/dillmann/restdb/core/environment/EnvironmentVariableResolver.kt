@@ -45,7 +45,7 @@ class EnvironmentVariableResolver<T : Any>(
         if (!::value.isInitialized) {
             val variableName = property.name.camelCaseToSnakeCase().toUpperCase()
             val environmentKey = "$ENVIRONMENT_VARIABLES_PREFIX$variableName"
-            value = System.getenv().entries
+            value = EnvironmentResolver.values().entries
                 .firstOrNull { (key, _) -> environmentKey.equals(key, ignoreCase = true) }
                 ?.let { (_, value) -> converter(value) }
                 ?: defaultValue ?: error("Missing environment variable: $variableName")

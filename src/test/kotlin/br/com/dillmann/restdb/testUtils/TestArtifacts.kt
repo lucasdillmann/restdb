@@ -44,3 +44,10 @@ fun randomLong() =
  */
 fun randomPositiveInt() =
     randomInt().let { if (it < 0) it * -1 else it }
+
+/**
+ * @author Lucas Dillmann
+ * @since 1.0.0, 2020-05-02
+ */
+fun randomBoolean() =
+    listOf(false, true).random()
