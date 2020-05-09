@@ -31,7 +31,7 @@ fun Application.module() {
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-28
  */
-fun Application.installRoutes() {
+private fun Application.installRoutes() {
     routing {
         metadataEndpoints()
         dataEndpoints()

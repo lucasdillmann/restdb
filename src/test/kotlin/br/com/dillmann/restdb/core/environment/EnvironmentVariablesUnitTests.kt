@@ -1,5 +1,6 @@
 package br.com.dillmann.restdb.core.environment
 
+import br.com.dillmann.restdb.testUtils.expect
 import br.com.dillmann.restdb.testUtils.randomBoolean
 import br.com.dillmann.restdb.testUtils.randomPositiveInt
 import br.com.dillmann.restdb.testUtils.randomString
@@ -7,10 +8,11 @@ import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import org.junit.After
-import org.junit.Assert.assertThrows
 import org.junit.Assume.assumeTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ExpectedException
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.slf4j.event.Level
@@ -53,6 +55,9 @@ class EnvironmentVariablesUnitTests<T>(private val scenario: TestScenario<T>) {
                 TestScenario(randomString(), "development", "RESTDB_APPLICATION_VERSION") { applicationVersion }
             )
     }
+
+    @get:Rule
+    val expectedException: ExpectedException = ExpectedException.none()
 
     @Before
     fun setUp() {
@@ -115,11 +120,11 @@ class EnvironmentVariablesUnitTests<T>(private val scenario: TestScenario<T>) {
         every { EnvironmentResolver.values() } returns emptyMap()
         val (_, _, variableName, provider) = scenario
 
+        // validation
+        expectedException.expect<IllegalStateException>("Missing environment variable: $variableName")
 
-        // execution and validation
-        assertThrows("Missing environment variable: $variableName", IllegalStateException::class.java) {
-            EnvironmentVariables.provider()
-        }
+        // execution
+        EnvironmentVariables.provider()
     }
 
 }

@@ -48,7 +48,7 @@ class EnvironmentVariableResolver<T : Any>(
             value = EnvironmentResolver.values().entries
                 .firstOrNull { (key, _) -> environmentKey.equals(key, ignoreCase = true) }
                 ?.let { (_, value) -> converter(value) }
-                ?: defaultValue ?: error("Missing environment variable: $variableName")
+                ?: defaultValue ?: error("Missing environment variable: $environmentKey")
         }
 
         return value

@@ -21,14 +21,12 @@ object DriverTypeResolver {
     /**
      * Resolves current SGBD type in use
      */
-    private fun resolve(): DriverType {
-        val sgbd = EnvironmentVariables.jdbcUrl.split(":")[1].toLowerCase()
-        return when(sgbd) {
+    private fun resolve(): DriverType =
+        when (val database = EnvironmentVariables.jdbcUrl.split(":")[1].toLowerCase()) {
             in listOf("mysql", "mariadb") -> DriverType.MYSQL
             "postgresql" -> DriverType.POSTGRESQL
             "sqlserver" -> DriverType.SQL_SERVER
-            else -> error("Unsupported SGBD: $sgbd")
+            else -> error("Unsupported database: $database")
         }
-    }
 
 }
