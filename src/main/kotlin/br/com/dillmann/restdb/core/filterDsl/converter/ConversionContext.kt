@@ -11,7 +11,7 @@ import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicate
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-30
  */
-class ConversionContext() {
+class ConversionContext {
     val root = TreeNode(NodeType.ROOT, null)
     var currentNode = root
         private set

@@ -1,7 +1,6 @@
 package br.com.dillmann.restdb.domain.data.utils
 
 import br.com.dillmann.restdb.core.converter.ValueConverter
-import br.com.dillmann.restdb.core.jdbc.isNumeric
 import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import java.sql.Array
 import java.sql.Connection
@@ -47,19 +46,6 @@ fun retrieveSingleRow(
         }
     }
 }
-
-/**
- * Converts a [String] to [Double]. If a conversion error happens, this functions absorves it and returns null.
- *
- * @author Lucas Dillmann
- * @since 1.0.0, 2020-04-25
- */
-private fun String.safeToDouble() =
-    try {
-        toDouble()
-    } catch (ex: NumberFormatException) {
-        null
-    }
 
 /**
  * When JDBC result object is an array, automatically converts it to an kotlin [Array] instance. When it is not,
