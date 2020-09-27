@@ -10,14 +10,14 @@ import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicate
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-30
  */
-class FilterDslJdbcConverter : FilterDslBaseListener() {
+class FilterDslJdbcConverter(private val partitionName: String, private val tableName: String) : FilterDslBaseListener() {
     private val context = ConversionContext()
 
     /**
      * Compiles current conversion to a [JdbcPredicate]
      */
     fun jdbcPredicate() =
-        TreeNodeCompiler.compile(context.root)
+        TreeNodeCompiler(partitionName, tableName, context.root).compile()
 
     /**
      * Notifies conversion listener that ANTLR parser is entering an expression group
@@ -81,7 +81,7 @@ class FilterDslJdbcConverter : FilterDslBaseListener() {
      */
     override fun exitParameterNumericValue(parserContext: FilterDslParser.ParameterNumericValueContext) {
         context.currentNode.parameters =
-            context.currentNode.parameters!! + parserContext.text.toDouble()
+            context.currentNode.parameters!! + parserContext.text
     }
 
     /**

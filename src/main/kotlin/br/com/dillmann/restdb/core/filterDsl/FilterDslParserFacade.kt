@@ -14,8 +14,8 @@ object FilterDslParserFacade {
     /**
      * Parses the given [input] String into a [JdbcPredicate]
      */
-    fun parse(input: String): JdbcPredicate {
-        val converter = FilterDslJdbcConverter()
+    fun parse(input: String, partitionName: String, tableName: String): JdbcPredicate {
+        val converter = FilterDslJdbcConverter(partitionName, tableName)
         val parser = FilterDslParserFactory.build(input)
         parser.addParseListener(converter)
         parser.root() // starts the parse at the root element

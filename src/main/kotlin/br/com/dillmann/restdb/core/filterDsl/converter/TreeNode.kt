@@ -17,7 +17,7 @@ class TreeNode(var type: NodeType, val parent: TreeNode?) {
     val children = mutableListOf<TreeNode>()
     var operation: String? = null
     var columnName: String? = null
-    var parameters: List<Any>? = null
+    var parameters: List<String>? = null
     var logicalOperator: String? = null
 
     /**

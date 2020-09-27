@@ -1,8 +1,15 @@
 package br.com.dillmann.restdb.core.filterDsl.converter
 
+import br.com.dillmann.restdb.core.converter.ValueConverter
 import br.com.dillmann.restdb.core.filterDsl.jdbc.filter.FilterJdbcPredicate
 import br.com.dillmann.restdb.core.filterDsl.jdbc.group.GroupJdbcPredicate
 import br.com.dillmann.restdb.testUtils.expect
+import br.com.dillmann.restdb.testUtils.randomString
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkAll
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
@@ -18,6 +25,17 @@ class TreeNodeCompilerUnitTests {
     @get:Rule
     val expectedException: ExpectedException = ExpectedException.none()
 
+    @Before
+    fun setUp() {
+        mockkObject(ValueConverter)
+        every { ValueConverter.convert(any(), any(), any(), any()) } answers { arg(0) }
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
+    }
+
     @Test
     fun `when node has logical operator type, it should throw an error`() {
         // scenario
@@ -28,7 +46,7 @@ class TreeNodeCompilerUnitTests {
             .expect<IllegalStateException>("Logical operators should be compiled indirectly by groups")
 
         // execution
-        TreeNodeCompiler.compile(node)
+        TreeNodeCompiler(randomString(), randomString(), node).compile()
     }
 
     @Test
@@ -37,7 +55,7 @@ class TreeNodeCompilerUnitTests {
         val node = randomRootNode()
 
         // execution
-        val result = TreeNodeCompiler.compile(node)
+        val result = TreeNodeCompiler(randomString(), randomString(), node).compile()
 
         // validation
         assertNotNull(result)
@@ -49,7 +67,7 @@ class TreeNodeCompilerUnitTests {
         val node = randomGroupNode()
 
         // execution
-        val result = TreeNodeCompiler.compile(node)
+        val result = TreeNodeCompiler(randomString(), randomString(), node).compile()
 
         // validation
         assertTrue { result is GroupJdbcPredicate }
@@ -61,7 +79,7 @@ class TreeNodeCompilerUnitTests {
         val node = randomFilterNode()
 
         // execution
-        val result = TreeNodeCompiler.compile(node)
+        val result = TreeNodeCompiler(randomString(), randomString(), node).compile()
 
         // validation
         assertTrue { result is FilterJdbcPredicate }

@@ -1,5 +1,6 @@
 package br.com.dillmann.restdb.core.filterDsl.converter
 
+import br.com.dillmann.restdb.core.converter.ValueConverter
 import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicate
 import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicateFactory
 import br.com.dillmann.restdb.core.filterDsl.jdbc.filter.FilterJdbcPredicate
@@ -12,15 +13,28 @@ import br.com.dillmann.restdb.core.filterDsl.jdbc.logicalOperator.LogicalOperato
  * @author Lucas Dillmann
  * @since 1.0.0, 2020-03-30
  */
-object TreeNodeCompiler {
+class TreeNodeCompiler(
+    private val partitionName: String,
+    private val tableName: String,
+    private val rootNode: TreeNode
+) {
 
     /**
-     * Starts the compilation
+     * Starts the compilation from the [rootNode]
      *
      * @author Lucas Dillmann
      * @since 1.0.0, 2020-03-30
      */
-    fun compile(node: TreeNode): JdbcPredicate =
+    fun compile(): JdbcPredicate =
+        compile(rootNode)
+
+    /**
+     * Compile the provided [node]
+     *
+     * @author Lucas Dillmann
+     * @since 1.0.0, 2020-03-30
+     */
+    private fun compile(node: TreeNode): JdbcPredicate =
         when (node.type) {
             NodeType.ROOT -> compileChildren(node)
             NodeType.GROUP -> compileGroup(node)
@@ -31,12 +45,14 @@ object TreeNodeCompiler {
     /**
      * Compiles a [TreeNode] into a [FilterJdbcPredicate]
      */
-    private fun compileFilter(node: TreeNode) =
-        JdbcPredicateFactory.filter(
-            node.operation!!,
-            node.columnName!!,
-            node.parameters ?: emptyList()
-        )
+    private fun compileFilter(node: TreeNode): FilterJdbcPredicate {
+        val parameters = node
+            .parameters
+            ?.map { ValueConverter.convert(it, partitionName, tableName, node.columnName!!) }
+            ?: emptyList()
+
+        return JdbcPredicateFactory.filter(node.operation!!, node.columnName!!, parameters)
+    }
 
     /**
      * Compiles a [TreeNode] into a [GroupJdbcPredicate]

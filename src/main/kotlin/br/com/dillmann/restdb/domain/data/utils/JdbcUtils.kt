@@ -1,5 +1,6 @@
 package br.com.dillmann.restdb.domain.data.utils
 
+import br.com.dillmann.restdb.core.converter.ValueConverter
 import br.com.dillmann.restdb.core.jdbc.isNumeric
 import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import java.sql.Array
@@ -30,7 +31,7 @@ fun retrieveSingleRow(
     val primaryKeyValues = primaryKeyColumns.map {
         val value = data[it]
         val column = columns[it] ?: error("Missing column metadata for $partition.$table.$it")
-        if (column.jdbcType.isNumeric() && value is String) value.safeToDouble() else value
+        if (value is String) ValueConverter.convert(value, partition, table, column.name) else value
     }
     val statementColumns = primaryKeyColumns.joinToString(separator = ", ") { "$it = ?" }
     val selectSqlStatement = "SELECT * FROM $partition.$table WHERE $statementColumns"

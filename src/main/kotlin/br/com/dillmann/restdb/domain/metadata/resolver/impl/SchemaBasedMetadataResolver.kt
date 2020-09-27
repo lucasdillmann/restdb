@@ -2,6 +2,7 @@ package br.com.dillmann.restdb.domain.metadata.resolver.impl
 
 import br.com.dillmann.restdb.domain.metadata.model.*
 import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolver
+import br.com.dillmann.restdb.domain.metadata.resolver.utils.column
 import br.com.dillmann.restdb.domain.metadata.resolver.utils.columns
 import br.com.dillmann.restdb.domain.metadata.resolver.utils.tablePrimaryKeys
 import java.sql.Connection
@@ -140,6 +141,24 @@ object SchemaBasedMetadataResolver : BasicMetadataResolver(), MetadataResolver {
         return connection.metaData
             .getColumns(null, partitionName, tableName, null)
             .columns()
+    }
+
+    /**
+     * Loads column details for given [columnName]
+     *
+     * @param connection JDBC connection
+     * @param partitionName Partition name
+     * @param tableName Table name
+     * @param columnName Column name
+     */
+    override fun findTableColumn(connection: Connection, partitionName: String, tableName: String, columnName: String): Column? {
+        return connection
+            .metaData
+            .getColumns(null, partitionName, tableName, columnName)
+            .use {
+                if (it.next()) it.column()
+                else null
+            }
     }
 
 }

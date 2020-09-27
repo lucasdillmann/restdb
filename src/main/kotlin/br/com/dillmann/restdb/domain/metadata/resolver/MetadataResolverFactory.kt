@@ -1,7 +1,9 @@
 package br.com.dillmann.restdb.domain.metadata.resolver
 
+import br.com.dillmann.restdb.core.environment.EnvironmentVariables
 import br.com.dillmann.restdb.core.jdbc.type.DriverType
 import br.com.dillmann.restdb.core.jdbc.type.DriverTypeResolver
+import br.com.dillmann.restdb.domain.metadata.cache.MetadataCacheProxy
 import br.com.dillmann.restdb.domain.metadata.resolver.impl.CatalogBasedMetadataResolver
 import br.com.dillmann.restdb.domain.metadata.resolver.impl.SchemaBasedMetadataResolver
 
@@ -23,11 +25,14 @@ object MetadataResolverFactory {
     fun build(): MetadataResolver =
         compatibleImplementation
 
-    private fun resolveCompatibleImplementation(): MetadataResolver =
-        when (DriverTypeResolver.current()) {
+    private fun resolveCompatibleImplementation(): MetadataResolver {
+        val implementation = when (DriverTypeResolver.current()) {
             DriverType.MYSQL -> CatalogBasedMetadataResolver
             DriverType.POSTGRESQL -> SchemaBasedMetadataResolver
             DriverType.SQL_SERVER -> SchemaBasedMetadataResolver
         }
+
+        return if (EnvironmentVariables.cacheDatabaseMetadata) MetadataCacheProxy(implementation) else implementation
+    }
 
 }

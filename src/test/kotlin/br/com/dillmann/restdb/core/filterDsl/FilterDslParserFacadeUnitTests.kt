@@ -39,7 +39,7 @@ class FilterDslParserFacadeUnitTests {
         val input = randomString()
 
         // execution
-        FilterDslParserFacade.parse(input)
+        FilterDslParserFacade.parse(input, randomString(), randomString())
 
         // validation
         verify { FilterDslParserFactory.build(input) }
@@ -48,7 +48,7 @@ class FilterDslParserFacadeUnitTests {
     @Test
     fun `it should start parsing at root element`() {
         // execution
-        FilterDslParserFacade.parse(randomString())
+        FilterDslParserFacade.parse(randomString(), randomString(), randomString())
 
         // validation
         verify { parser.root() }
@@ -57,7 +57,7 @@ class FilterDslParserFacadeUnitTests {
     @Test
     fun `it should add conversion parser listener prior to starting the parsing`() {
         // execution
-        FilterDslParserFacade.parse(randomString())
+        FilterDslParserFacade.parse(randomString(), randomString(), randomString())
 
         // validation
         verifySequence {
@@ -73,7 +73,7 @@ class FilterDslParserFacadeUnitTests {
         every { anyConstructed<FilterDslJdbcConverter>().jdbcPredicate() } returns expectedResult
 
         // execution
-        val result = FilterDslParserFacade.parse(randomString())
+        val result = FilterDslParserFacade.parse(randomString(), randomString(), randomString())
 
         // validation
         assertEquals(expectedResult, result)

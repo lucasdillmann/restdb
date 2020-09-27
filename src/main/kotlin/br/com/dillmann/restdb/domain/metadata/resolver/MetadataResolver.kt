@@ -69,4 +69,14 @@ interface MetadataResolver {
      * @param tableName Table name
      */
     fun findTableColumns(connection: Connection, partitionName: String, tableName: String): Map<String, Column>
+
+    /**
+     * Loads column details for given [columnName]
+     *
+     * @param connection JDBC connection
+     * @param partitionName Partition name
+     * @param tableName Table name
+     * @param columnName Column name
+     */
+    fun findTableColumn(connection: Connection, partitionName: String, tableName: String, columnName: String): Column?
 }

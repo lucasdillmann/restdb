@@ -5,6 +5,7 @@ import br.com.dillmann.restdb.core.filterDsl.jdbc.JdbcPredicate
 import br.com.dillmann.restdb.testUtils.randomDouble
 import br.com.dillmann.restdb.testUtils.randomString
 import io.mockk.*
+import io.mockk.InternalPlatformDsl.toStr
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -21,13 +22,12 @@ class FilterDslJdbcConverterUnitTests {
 
     @Before
     fun setUp() {
-        mockkObject(TreeNodeCompiler)
-        mockkConstructor(ConversionContext::class)
+        mockkConstructor(ConversionContext::class, TreeNodeCompiler::class)
         every { anyConstructed<ConversionContext>().startNode(any()) } just Runs
         every { anyConstructed<ConversionContext>().endNode() } just Runs
         every { anyConstructed<ConversionContext>().currentNode } returns treeNode
 
-        converter = FilterDslJdbcConverter()
+        converter = FilterDslJdbcConverter(randomString(), randomString())
     }
 
     @After
@@ -152,7 +152,7 @@ class FilterDslJdbcConverterUnitTests {
     }
 
     @Test
-    fun `it should add a numeric parameter as Double when parser exits a numeric parameter`() {
+    fun `it should add a numeric parameter as String when parser exits a numeric parameter`() {
         // scenario
         val expectedValue = randomDouble()
         val parserContext = mockk<FilterDslParser.ParameterNumericValueContext>()
@@ -163,7 +163,7 @@ class FilterDslJdbcConverterUnitTests {
         converter.exitParameterNumericValue(parserContext)
 
         // validation
-        verify { treeNode.parameters = listOf(expectedValue) }
+        verify { treeNode.parameters = listOf(expectedValue.toString()) }
     }
 
     @Test
@@ -185,7 +185,7 @@ class FilterDslJdbcConverterUnitTests {
     fun `it should delegate root node compilation to TreeNodeCompiler`() {
         // scenario
         val expectedResult: JdbcPredicate = mockk()
-        every { TreeNodeCompiler.compile(any()) } returns expectedResult
+        every { anyConstructed<TreeNodeCompiler>().compile() } returns expectedResult
 
         // execution
         val result = converter.jdbcPredicate()

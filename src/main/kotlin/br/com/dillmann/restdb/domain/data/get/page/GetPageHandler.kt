@@ -25,7 +25,7 @@ suspend fun handleGetPage(call: ApplicationCall) {
     val pageSize = call.getQueryParameter("pageSize", DEFAULT_PAGE_SIZE) { it.toLong() }
     val sorting = call.getQueryParameter("sort", "").asSortingInstructions()
     val projection = call.getQueryParameter("columns", "").asProjectionInstructions()
-    val filter = call.getQueryParameter("filter", "").asFilterPredicate()
+    val filter = call.getQueryParameter("filter", "").asFilterPredicate(partitionName, tableName)
 
     val page = findPage(partitionName, tableName, pageNumber, pageSize, sorting, projection, filter)
     call.respond(HttpStatusCode.OK, page)
