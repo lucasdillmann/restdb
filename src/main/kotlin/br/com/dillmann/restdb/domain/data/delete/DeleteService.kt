@@ -24,7 +24,7 @@ fun deleteRow(partition: String, table: String, rowId: String) {
 
         connection.runInTransaction {
             connection.prepareStatement(deleteSqlStatement).use { statement ->
-                statement.setParameter(1, rowId)
+                statement.setParameter(1, rowId, partition, table, primaryKeyColumn)
                 statement.execute()
             }
         }

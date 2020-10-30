@@ -57,8 +57,8 @@ private fun persistRow(
 
     connection.runInTransaction {
         connection.prepareStatement(insertSqlStatement).use { statement ->
-            data.entries.forEachIndexed { index, (_, value) ->
-                statement.setParameter(index + 1, value)
+            data.entries.forEachIndexed { index, (column, value) ->
+                statement.setParameter(index + 1, value, partition, table, column)
             }
             statement.execute()
         }

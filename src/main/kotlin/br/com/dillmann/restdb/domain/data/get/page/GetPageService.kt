@@ -6,7 +6,7 @@ import br.com.dillmann.restdb.domain.data.get.page.jdbc.SqlBuilder
 import br.com.dillmann.restdb.domain.data.get.page.jdbc.escapeSql
 import br.com.dillmann.restdb.domain.data.get.page.sorting.SortColumn
 import br.com.dillmann.restdb.domain.data.utils.autoConvertArray
-import br.com.dillmann.restdb.domain.data.utils.setParameter
+import br.com.dillmann.restdb.domain.data.utils.setRawParameter
 import br.com.dillmann.restdb.domain.data.validatePartitionAndTableName
 import br.com.dillmann.restdb.domain.metadata.resolver.MetadataResolverFactory
 import java.sql.Connection
@@ -83,7 +83,7 @@ fun findPage(
 private fun Connection.prepareStatement(sql: String, parameters: Map<Int, Any?>): PreparedStatement =
     prepareStatement(sql)
         .also { statement ->
-            parameters.forEach { (position, value) -> statement.setParameter(position, value) }
+            parameters.forEach { (position, value) -> statement.setRawParameter(position, value) }
         }
 
 

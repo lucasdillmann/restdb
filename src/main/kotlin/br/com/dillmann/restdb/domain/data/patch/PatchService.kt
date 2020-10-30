@@ -70,8 +70,8 @@ private fun persistRow(
     connection.runInTransaction {
         connection.prepareStatement(updateSqlStatement).use { statement ->
             var index = 1
-            data.keys.forEach { statement.setParameter(index++, data[it]) }
-            statement.setParameter(index, rowId)
+            data.keys.forEach { statement.setParameter(index++, data[it], partition, table, it) }
+            statement.setParameter(index, rowId, partition, table, primaryKeyColumn)
             statement.execute()
         }
     }

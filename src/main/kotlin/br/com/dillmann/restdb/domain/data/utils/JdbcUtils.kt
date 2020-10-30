@@ -36,7 +36,7 @@ fun retrieveSingleRow(
     val selectSqlStatement = "SELECT * FROM $partition.$table WHERE $statementColumns"
 
     return connection.prepareStatement(selectSqlStatement).use { statement ->
-        primaryKeyValues.forEachIndexed { index, value -> statement.setParameter(index + 1, value) }
+        primaryKeyValues.forEachIndexed { index, value -> statement.setRawParameter(index + 1, value) }
         statement.executeQuery().use { resultSet ->
             if (resultSet.next()) {
                 tableColumns.map { it to resultSet.getObject(it).autoConvertArray() }.toMap()
